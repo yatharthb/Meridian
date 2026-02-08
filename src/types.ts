@@ -3,13 +3,24 @@ export interface Location {
   name: string;
   lat: number;
   lng: number;
-  type: 'mine' | 'refinery' | 'plant' | 'consumer' | 'port' | 'field';
+  type: 'mine' | 'refinery' | 'plant' | 'consumer' | 'port' | 'field' | 'hub';
   production?: number;
   capacity?: number;
   consumption?: number;
   unit: string;
   country: string;
-  description?: string;
+  description: string;
+  operator?: string;
+  established?: number;
+  employees?: number;
+  exportTo?: string[];
+}
+
+export interface SupplyChain {
+  from: string;
+  to: string;
+  volume: number;
+  unit: string;
 }
 
 export interface Resource {
@@ -19,9 +30,15 @@ export interface Resource {
   color: string;
   unit: string;
   locations: Location[];
+  supplyChains: SupplyChain[];
   globalProduction: number;
   globalConsumption: number;
   description: string;
+  majorProducers: string[];
+  majorConsumers: string[];
+  uses: string[];
+  marketSize?: string;
+  pricePerUnit?: string;
 }
 
 export type ResourceMap = Record<string, Resource>;

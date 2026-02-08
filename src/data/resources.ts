@@ -9,7 +9,12 @@ export const resources: ResourceMap = {
     unit: 'million tonnes',
     globalProduction: 25,
     globalConsumption: 25,
-    description: 'Essential for electrical wiring, electronics, and construction',
+    description: 'Essential conductor for electrical wiring, electronics, renewable energy infrastructure, and electric vehicles',
+    majorProducers: ['Chile', 'Peru', 'China', 'Congo', 'USA'],
+    majorConsumers: ['China', 'USA', 'Germany', 'Japan', 'South Korea'],
+    uses: ['Electrical wiring', 'Electronics', 'Construction', 'Transportation', 'Renewable energy'],
+    marketSize: '$250 billion',
+    pricePerUnit: '$8,500/tonne',
     locations: [
       {
         id: 'escondida',
@@ -20,7 +25,11 @@ export const resources: ResourceMap = {
         production: 1.0,
         unit: 'million tonnes/year',
         country: 'Chile',
-        description: 'World\'s largest copper mine'
+        description: 'World\'s largest copper mine, operated by BHP, producing over 1 million tonnes annually',
+        operator: 'BHP',
+        established: 1990,
+        employees: 2500,
+        exportTo: ['China', 'Japan', 'South Korea']
       },
       {
         id: 'grasberg',
@@ -31,7 +40,11 @@ export const resources: ResourceMap = {
         production: 0.6,
         unit: 'million tonnes/year',
         country: 'Indonesia',
-        description: 'Largest gold mine and 2nd largest copper mine'
+        description: 'Largest gold mine and second largest copper mine globally, located in Papua province',
+        operator: 'Freeport-McMoRan',
+        established: 1988,
+        employees: 24000,
+        exportTo: ['China', 'India', 'Japan']
       },
       {
         id: 'morenci',
@@ -42,7 +55,11 @@ export const resources: ResourceMap = {
         production: 0.4,
         unit: 'million tonnes/year',
         country: 'USA',
-        description: 'Largest copper mine in North America'
+        description: 'Largest copper mine in North America, open-pit operation in Arizona',
+        operator: 'Freeport-McMoRan',
+        established: 1872,
+        employees: 4000,
+        exportTo: ['USA', 'Mexico', 'China']
       },
       {
         id: 'chuquicamata',
@@ -53,7 +70,26 @@ export const resources: ResourceMap = {
         production: 0.4,
         unit: 'million tonnes/year',
         country: 'Chile',
-        description: 'One of the largest open pit mines'
+        description: 'Historic open pit mine transitioning to underground operations, one of deepest in the world',
+        operator: 'Codelco',
+        established: 1915,
+        employees: 7000,
+        exportTo: ['China', 'Japan', 'Germany']
+      },
+      {
+        id: 'collahuasi',
+        name: 'Collahuasi',
+        lat: -20.95,
+        lng: -68.73,
+        type: 'mine',
+        production: 0.5,
+        unit: 'million tonnes/year',
+        country: 'Chile',
+        description: 'High-altitude copper mine in northern Chile, one of highest producing mines globally',
+        operator: 'Anglo American/Glencore',
+        established: 1999,
+        employees: 4500,
+        exportTo: ['China', 'Japan', 'India']
       },
       {
         id: 'tongling',
@@ -64,19 +100,58 @@ export const resources: ResourceMap = {
         capacity: 1.2,
         unit: 'million tonnes/year',
         country: 'China',
-        description: 'Major copper refinery'
+        description: 'Major copper smelting and refining complex processing domestic and imported concentrates',
+        operator: 'Tongling Nonferrous Metals Group',
+        established: 1952,
+        employees: 15000
+      },
+      {
+        id: 'glencore-huelva',
+        name: 'Atlantic Copper Smelter',
+        lat: 37.25,
+        lng: -6.95,
+        type: 'refinery',
+        capacity: 0.35,
+        unit: 'million tonnes/year',
+        country: 'Spain',
+        description: 'Largest copper smelter in Europe, processing concentrates from Americas',
+        operator: 'Glencore',
+        established: 1970,
+        employees: 1200
+      },
+      {
+        id: 'shanghai-copper',
+        name: 'Shanghai Manufacturing Hub',
+        lat: 31.2304,
+        lng: 121.4737,
+        type: 'consumer',
+        consumption: 2.5,
+        unit: 'million tonnes/year',
+        country: 'China',
+        description: 'Major electronics and electrical equipment manufacturing center consuming vast amounts of copper',
+        employees: 500000
       }
+    ],
+    supplyChains: [
+      { from: 'escondida', to: 'tongling', volume: 0.5, unit: 'million tonnes/year' },
+      { from: 'chuquicamata', to: 'shanghai-copper', volume: 0.3, unit: 'million tonnes/year' },
+      { from: 'morenci', to: 'shanghai-copper', volume: 0.2, unit: 'million tonnes/year' }
     ]
   },
   oil: {
     id: 'oil',
     name: 'Crude Oil',
     category: 'energy',
-    color: '#000000',
+    color: '#1a1a1a',
     unit: 'million barrels/day',
-    globalProduction: 95,
-    globalConsumption: 95,
-    description: 'Primary energy source for transportation and petrochemicals',
+    globalProduction: 100,
+    globalConsumption: 100,
+    description: 'Primary energy source powering transportation, petrochemicals, and industrial processes worldwide',
+    majorProducers: ['USA', 'Saudi Arabia', 'Russia', 'Canada', 'Iraq'],
+    majorConsumers: ['USA', 'China', 'India', 'Japan', 'Russia'],
+    uses: ['Transportation fuel', 'Petrochemicals', 'Plastics', 'Heating', 'Electricity generation'],
+    marketSize: '$2.1 trillion',
+    pricePerUnit: '$75/barrel',
     locations: [
       {
         id: 'ghawar',
@@ -87,7 +162,11 @@ export const resources: ResourceMap = {
         production: 3.8,
         unit: 'million barrels/day',
         country: 'Saudi Arabia',
-        description: 'World\'s largest oil field'
+        description: 'World\'s largest conventional oil field, discovered in 1948, contains 75-83 billion barrels of reserves',
+        operator: 'Saudi Aramco',
+        established: 1951,
+        employees: 8000,
+        exportTo: ['China', 'Japan', 'South Korea', 'India']
       },
       {
         id: 'permian',
@@ -95,10 +174,14 @@ export const resources: ResourceMap = {
         lat: 31.8,
         lng: -102.4,
         type: 'field',
-        production: 5.2,
+        production: 5.8,
         unit: 'million barrels/day',
         country: 'USA',
-        description: 'Largest oil-producing region in USA'
+        description: 'Most productive oil region in USA, spanning Texas and New Mexico, shale oil revolution epicenter',
+        operator: 'Multiple operators',
+        established: 1920,
+        employees: 45000,
+        exportTo: ['China', 'India', 'South Korea', 'Netherlands']
       },
       {
         id: 'burgan',
@@ -109,7 +192,26 @@ export const resources: ResourceMap = {
         production: 1.7,
         unit: 'million barrels/day',
         country: 'Kuwait',
-        description: 'Second largest oil field'
+        description: 'Second largest oil field globally with 66-72 billion barrels of reserves',
+        operator: 'Kuwait Oil Company',
+        established: 1938,
+        employees: 5000,
+        exportTo: ['China', 'India', 'Japan', 'South Korea']
+      },
+      {
+        id: 'samotlor',
+        name: 'Samotlor Field',
+        lat: 61.1,
+        lng: 76.7,
+        type: 'field',
+        production: 0.6,
+        unit: 'million barrels/day',
+        country: 'Russia',
+        description: 'Largest oil field in Russia, located in Western Siberia',
+        operator: 'Rosneft',
+        established: 1965,
+        employees: 12000,
+        exportTo: ['China', 'Germany', 'Netherlands', 'Poland']
       },
       {
         id: 'houston',
@@ -117,10 +219,13 @@ export const resources: ResourceMap = {
         lat: 29.7604,
         lng: -95.3698,
         type: 'refinery',
-        capacity: 2.5,
+        capacity: 2.8,
         unit: 'million barrels/day',
         country: 'USA',
-        description: 'Largest refining hub in North America'
+        description: 'Largest refining hub in North America with multiple major refineries along Ship Channel',
+        operator: 'Multiple operators',
+        established: 1900,
+        employees: 25000
       },
       {
         id: 'rotterdam',
@@ -128,11 +233,48 @@ export const resources: ResourceMap = {
         lat: 51.9225,
         lng: 4.4792,
         type: 'port',
-        capacity: 1.4,
+        capacity: 1.5,
         unit: 'million barrels/day',
         country: 'Netherlands',
-        description: 'Major European oil hub'
+        description: 'Europe\'s largest port and oil trading hub, critical distribution center for crude and products',
+        operator: 'Port of Rotterdam',
+        established: 1872,
+        employees: 8000
+      },
+      {
+        id: 'jamnagar',
+        name: 'Jamnagar Refinery',
+        lat: 22.47,
+        lng: 70.07,
+        type: 'refinery',
+        capacity: 1.4,
+        unit: 'million barrels/day',
+        country: 'India',
+        description: 'World\'s largest refinery complex with capacity of 1.4 million barrels per day',
+        operator: 'Reliance Industries',
+        established: 1999,
+        employees: 4000,
+        exportTo: ['Singapore', 'USA', 'Europe', 'Africa']
+      },
+      {
+        id: 'singapore',
+        name: 'Singapore Refining Hub',
+        lat: 1.3521,
+        lng: 103.8198,
+        type: 'refinery',
+        capacity: 1.5,
+        unit: 'million barrels/day',
+        country: 'Singapore',
+        description: 'Asia\'s largest oil trading and refining center, crucial for regional petroleum product distribution',
+        operator: 'Multiple operators',
+        established: 1960,
+        employees: 12000
       }
+    ],
+    supplyChains: [
+      { from: 'ghawar', to: 'jamnagar', volume: 0.4, unit: 'million barrels/day' },
+      { from: 'permian', to: 'houston', volume: 2.5, unit: 'million barrels/day' },
+      { from: 'burgan', to: 'singapore', volume: 0.8, unit: 'million barrels/day' }
     ]
   },
   iron: {
@@ -143,7 +285,12 @@ export const resources: ResourceMap = {
     unit: 'million tonnes',
     globalProduction: 2600,
     globalConsumption: 2600,
-    description: 'Primary raw material for steel production',
+    description: 'Primary raw material for steel production, essential for construction, infrastructure, and manufacturing',
+    majorProducers: ['Australia', 'Brazil', 'China', 'India', 'Russia'],
+    majorConsumers: ['China', 'India', 'Japan', 'South Korea', 'Germany'],
+    uses: ['Steel production', 'Construction', 'Automotive', 'Machinery', 'Infrastructure'],
+    marketSize: '$320 billion',
+    pricePerUnit: '$120/tonne',
     locations: [
       {
         id: 'carajas',
@@ -151,10 +298,14 @@ export const resources: ResourceMap = {
         lat: -6.0667,
         lng: -50.2000,
         type: 'mine',
-        production: 150,
+        production: 185,
         unit: 'million tonnes/year',
         country: 'Brazil',
-        description: 'World\'s largest iron ore mine'
+        description: 'World\'s largest and highest grade iron ore mine with 7.2 billion tonnes of reserves',
+        operator: 'Vale',
+        established: 1985,
+        employees: 3500,
+        exportTo: ['China', 'Japan', 'South Korea', 'Germany']
       },
       {
         id: 'pilbara',
@@ -162,10 +313,14 @@ export const resources: ResourceMap = {
         lat: -22.5,
         lng: 118.5,
         type: 'mine',
-        production: 500,
+        production: 580,
         unit: 'million tonnes/year',
         country: 'Australia',
-        description: 'Largest iron ore producing region'
+        description: 'World\'s largest iron ore producing region, home to Rio Tinto, BHP, and Fortescue operations',
+        operator: 'Multiple operators',
+        established: 1960,
+        employees: 45000,
+        exportTo: ['China', 'Japan', 'South Korea', 'Taiwan']
       },
       {
         id: 'kiruna',
@@ -176,7 +331,26 @@ export const resources: ResourceMap = {
         production: 27,
         unit: 'million tonnes/year',
         country: 'Sweden',
-        description: 'Largest underground iron ore mine'
+        description: 'Largest underground iron ore mine in the world, been operating for over 120 years',
+        operator: 'LKAB',
+        established: 1898,
+        employees: 2000,
+        exportTo: ['Germany', 'Netherlands', 'Belgium', 'UK']
+      },
+      {
+        id: 'sishen',
+        name: 'Sishen Mine',
+        lat: -27.7,
+        lng: 23.0,
+        type: 'mine',
+        production: 30,
+        unit: 'million tonnes/year',
+        country: 'South Africa',
+        description: 'One of the largest open pit iron ore mines in the world',
+        operator: 'Kumba Iron Ore',
+        established: 1953,
+        employees: 4000,
+        exportTo: ['China', 'Europe', 'Middle East']
       },
       {
         id: 'baosteel',
@@ -187,64 +361,27 @@ export const resources: ResourceMap = {
         capacity: 40,
         unit: 'million tonnes steel/year',
         country: 'China',
-        description: 'One of world\'s largest steel mills'
-      }
-    ]
-  },
-  aluminium: {
-    id: 'aluminium',
-    name: 'Aluminium',
-    category: 'metal',
-    color: '#A8A9AD',
-    unit: 'million tonnes',
-    globalProduction: 68,
-    globalConsumption: 68,
-    description: 'Lightweight metal for aerospace, automotive, and packaging',
-    locations: [
-      {
-        id: 'weipa',
-        name: 'Weipa Bauxite Mine',
-        lat: -12.6667,
-        lng: 141.8667,
-        type: 'mine',
-        production: 35,
-        unit: 'million tonnes bauxite/year',
-        country: 'Australia',
-        description: 'World\'s largest bauxite mine'
+        description: 'One of world\'s largest and most advanced integrated steel mills',
+        operator: 'China Baowu Steel Group',
+        established: 1978,
+        employees: 50000
       },
       {
-        id: 'guinea-bauxite',
-        name: 'Sangarédi Mine',
-        lat: 11.5833,
-        lng: -13.7167,
-        type: 'mine',
-        production: 32,
-        unit: 'million tonnes bauxite/year',
-        country: 'Guinea',
-        description: 'Major bauxite producer'
-      },
-      {
-        id: 'alcoa-portland',
-        name: 'Alcoa Portland Smelter',
-        lat: -38.3333,
-        lng: 141.6000,
-        type: 'plant',
-        production: 0.36,
-        unit: 'million tonnes/year',
-        country: 'Australia',
-        description: 'Major aluminium smelter'
-      },
-      {
-        id: 'chalco-qinghai',
-        name: 'Chalco Qinghai',
-        lat: 36.6167,
-        lng: 101.7667,
-        type: 'plant',
-        production: 0.5,
+        id: 'tangshan',
+        name: 'Tangshan Steel Hub',
+        lat: 39.63,
+        lng: 118.18,
+        type: 'consumer',
+        consumption: 150,
         unit: 'million tonnes/year',
         country: 'China',
-        description: 'Large-scale aluminium smelter'
+        description: 'China\'s largest steel production base, cluster of major steel mills',
+        employees: 200000
       }
+    ],
+    supplyChains: [
+      { from: 'pilbara', to: 'baosteel', volume: 120, unit: 'million tonnes/year' },
+      { from: 'carajas', to: 'tangshan', volume: 80, unit: 'million tonnes/year' }
     ]
   },
   lithium: {
@@ -252,10 +389,15 @@ export const resources: ResourceMap = {
     name: 'Lithium',
     category: 'element',
     color: '#CC99FF',
-    unit: 'thousand tonnes',
-    globalProduction: 130,
-    globalConsumption: 130,
-    description: 'Critical for electric vehicle batteries and energy storage',
+    unit: 'thousand tonnes LCE',
+    globalProduction: 180,
+    globalConsumption: 180,
+    description: 'Critical element for electric vehicle batteries, energy storage systems, and rechargeable electronics',
+    majorProducers: ['Australia', 'Chile', 'China', 'Argentina', 'Zimbabwe'],
+    majorConsumers: ['China', 'South Korea', 'Japan', 'USA', 'Germany'],
+    uses: ['EV batteries', 'Energy storage', 'Consumer electronics', 'Glass & ceramics', 'Lubricants'],
+    marketSize: '$15 billion',
+    pricePerUnit: '$20,000/tonne LCE',
     locations: [
       {
         id: 'atacama',
@@ -263,10 +405,14 @@ export const resources: ResourceMap = {
         lat: -23.5,
         lng: -68.25,
         type: 'mine',
-        production: 30,
-        unit: 'thousand tonnes/year',
+        production: 44,
+        unit: 'thousand tonnes LCE/year',
         country: 'Chile',
-        description: 'World\'s largest lithium brine operation'
+        description: 'World\'s highest grade lithium brine deposit, largest lithium production facility globally',
+        operator: 'SQM/Albemarle',
+        established: 1984,
+        employees: 3000,
+        exportTo: ['China', 'South Korea', 'Japan', 'USA']
       },
       {
         id: 'greenbushes',
@@ -274,10 +420,14 @@ export const resources: ResourceMap = {
         lat: -33.8667,
         lng: 116.0500,
         type: 'mine',
-        production: 40,
-        unit: 'thousand tonnes/year',
+        production: 60,
+        unit: 'thousand tonnes LCE/year',
         country: 'Australia',
-        description: 'Largest hard-rock lithium mine'
+        description: 'World\'s largest hard-rock lithium mine with highest grade spodumene ore',
+        operator: 'Talison Lithium',
+        established: 1983,
+        employees: 650,
+        exportTo: ['China', 'Japan', 'South Korea']
       },
       {
         id: 'uyuni',
@@ -285,67 +435,77 @@ export const resources: ResourceMap = {
         lat: -20.3,
         lng: -66.8,
         type: 'mine',
-        production: 5,
-        unit: 'thousand tonnes/year',
+        production: 0.5,
+        unit: 'thousand tonnes LCE/year',
         country: 'Bolivia',
-        description: 'World\'s largest lithium reserve'
+        description: 'World\'s largest salt flat containing 21 million tonnes of lithium reserves',
+        operator: 'YLB',
+        established: 2013,
+        employees: 500,
+        exportTo: ['China', 'Russia']
+      },
+      {
+        id: 'mt-cattlin',
+        name: 'Mt Cattlin',
+        lat: -32.7,
+        lng: 121.65,
+        type: 'mine',
+        production: 8,
+        unit: 'thousand tonnes LCE/year',
+        country: 'Australia',
+        description: 'Major spodumene lithium mine in Western Australia',
+        operator: 'Mineral Resources',
+        established: 2007,
+        employees: 250,
+        exportTo: ['China', 'Japan']
       },
       {
         id: 'ganfeng',
-        name: 'Ganfeng Lithium Plant',
+        name: 'Ganfeng Lithium',
         lat: 27.6167,
         lng: 115.8333,
-        type: 'plant',
-        capacity: 20,
-        unit: 'thousand tonnes/year',
+        type: 'refinery',
+        capacity: 40,
+        unit: 'thousand tonnes LCE/year',
         country: 'China',
-        description: 'Major lithium processing facility'
-      }
-    ]
-  },
-  nickel: {
-    id: 'nickel',
-    name: 'Nickel',
-    category: 'metal',
-    color: '#727472',
-    unit: 'million tonnes',
-    globalProduction: 3.3,
-    globalConsumption: 3.3,
-    description: 'Used in stainless steel and batteries',
-    locations: [
-      {
-        id: 'norilsk',
-        name: 'Norilsk-Talnakh',
-        lat: 69.3558,
-        lng: 88.2027,
-        type: 'mine',
-        production: 0.2,
-        unit: 'million tonnes/year',
-        country: 'Russia',
-        description: 'World\'s largest nickel mining complex'
+        description: 'World\'s largest lithium compounds producer and battery recycler',
+        operator: 'Ganfeng Lithium',
+        established: 2000,
+        employees: 8000
       },
       {
-        id: 'vale-sudbury',
-        name: 'Sudbury Basin',
-        lat: 46.49,
-        lng: -81.0,
-        type: 'mine',
-        production: 0.1,
-        unit: 'million tonnes/year',
-        country: 'Canada',
-        description: 'Historic nickel mining district'
+        id: 'lianyungang',
+        name: 'Lianyungang Processing Hub',
+        lat: 34.6,
+        lng: 119.2,
+        type: 'refinery',
+        capacity: 25,
+        unit: 'thousand tonnes LCE/year',
+        country: 'China',
+        description: 'Major lithium processing and battery materials manufacturing center',
+        operator: 'Multiple operators',
+        established: 2005,
+        employees: 15000
       },
       {
-        id: 'sorowako',
-        name: 'Sorowako Mine',
-        lat: -2.5333,
-        lng: 121.3500,
-        type: 'mine',
-        production: 0.08,
-        unit: 'million tonnes/year',
-        country: 'Indonesia',
-        description: 'Major nickel laterite operation'
+        id: 'gigafactory-nevada',
+        name: 'Tesla Gigafactory Nevada',
+        lat: 39.5379,
+        lng: -119.4389,
+        type: 'consumer',
+        consumption: 15,
+        unit: 'thousand tonnes LCE/year',
+        country: 'USA',
+        description: 'Massive battery production facility, world\'s largest building by footprint',
+        operator: 'Tesla/Panasonic',
+        established: 2016,
+        employees: 11000
       }
+    ],
+    supplyChains: [
+      { from: 'greenbushes', to: 'ganfeng', volume: 30, unit: 'thousand tonnes LCE/year' },
+      { from: 'atacama', to: 'ganfeng', volume: 20, unit: 'thousand tonnes LCE/year' },
+      { from: 'ganfeng', to: 'gigafactory-nevada', volume: 8, unit: 'thousand tonnes LCE/year' }
     ]
   },
   coal: {
@@ -356,7 +516,12 @@ export const resources: ResourceMap = {
     unit: 'million tonnes',
     globalProduction: 8000,
     globalConsumption: 8000,
-    description: 'Major energy source for electricity and steel production',
+    description: 'Major source of electricity generation and steel production, accounts for 27% of global energy',
+    majorProducers: ['China', 'India', 'Indonesia', 'USA', 'Australia'],
+    majorConsumers: ['China', 'India', 'USA', 'Japan', 'South Korea'],
+    uses: ['Electricity generation', 'Steel production', 'Cement manufacturing', 'Industrial heating'],
+    marketSize: '$800 billion',
+    pricePerUnit: '$100/tonne',
     locations: [
       {
         id: 'powder-river',
@@ -364,10 +529,14 @@ export const resources: ResourceMap = {
         lat: 43.8,
         lng: -105.5,
         type: 'mine',
-        production: 300,
+        production: 270,
         unit: 'million tonnes/year',
         country: 'USA',
-        description: 'Largest coal-producing region in USA'
+        description: 'Largest coal-producing region in USA, low-sulfur sub-bituminous coal',
+        operator: 'Multiple operators',
+        established: 1970,
+        employees: 5500,
+        exportTo: ['USA domestic']
       },
       {
         id: 'hunter-valley',
@@ -375,22 +544,62 @@ export const resources: ResourceMap = {
         lat: -32.5,
         lng: 151.2,
         type: 'mine',
-        production: 160,
+        production: 155,
         unit: 'million tonnes/year',
         country: 'Australia',
-        description: 'Major coal export region'
+        description: 'Premier thermal and metallurgical coal export region, over 40 operating mines',
+        operator: 'Multiple operators',
+        established: 1960,
+        employees: 17000,
+        exportTo: ['Japan', 'China', 'South Korea', 'Taiwan']
       },
       {
         id: 'shanxi',
-        name: 'Shanxi Province Mines',
+        name: 'Shanxi Province',
         lat: 37.87,
         lng: 112.55,
         type: 'mine',
-        production: 1000,
+        production: 1200,
         unit: 'million tonnes/year',
         country: 'China',
-        description: 'China\'s largest coal producing province'
+        description: 'China\'s coal heartland, produces one-quarter of national output',
+        operator: 'Multiple operators',
+        established: 1950,
+        employees: 600000,
+        exportTo: ['China domestic']
+      },
+      {
+        id: 'kalimantan',
+        name: 'Kalimantan Coal Region',
+        lat: -1.5,
+        lng: 116.0,
+        type: 'mine',
+        production: 400,
+        unit: 'million tonnes/year',
+        country: 'Indonesia',
+        description: 'Major thermal coal export region in Indonesian Borneo',
+        operator: 'Multiple operators',
+        established: 1990,
+        employees: 85000,
+        exportTo: ['China', 'India', 'Japan', 'Philippines']
+      },
+      {
+        id: 'port-newcastle',
+        name: 'Port of Newcastle',
+        lat: -32.92,
+        lng: 151.78,
+        type: 'port',
+        capacity: 160,
+        unit: 'million tonnes/year',
+        country: 'Australia',
+        description: 'World\'s largest coal export port handling thermal and metallurgical coal',
+        operator: 'Port of Newcastle',
+        established: 1799,
+        employees: 2000
       }
+    ],
+    supplyChains: [
+      { from: 'hunter-valley', to: 'port-newcastle', volume: 155, unit: 'million tonnes/year' }
     ]
   },
   naturalgas: {
@@ -399,9 +608,14 @@ export const resources: ResourceMap = {
     category: 'energy',
     color: '#4169E1',
     unit: 'billion cubic meters',
-    globalProduction: 4000,
-    globalConsumption: 4000,
-    description: 'Clean-burning fossil fuel for power and heating',
+    globalProduction: 4100,
+    globalConsumption: 4100,
+    description: 'Clean-burning fossil fuel for electricity, heating, and industrial processes, key to energy transition',
+    majorProducers: ['USA', 'Russia', 'Iran', 'China', 'Qatar'],
+    majorConsumers: ['USA', 'Russia', 'China', 'Iran', 'Japan'],
+    uses: ['Electricity generation', 'Heating', 'Industrial processes', 'Petrochemicals', 'LNG export'],
+    marketSize: '$900 billion',
+    pricePerUnit: '$5/MMBtu',
     locations: [
       {
         id: 'south-pars',
@@ -409,10 +623,14 @@ export const resources: ResourceMap = {
         lat: 27.0,
         lng: 52.5,
         type: 'field',
-        production: 250,
+        production: 300,
         unit: 'billion cubic meters/year',
         country: 'Iran/Qatar',
-        description: 'World\'s largest gas field'
+        description: 'World\'s largest gas field shared between Iran and Qatar, 51 trillion cubic meters of reserves',
+        operator: 'NIOC/Qatar Petroleum',
+        established: 1990,
+        employees: 25000,
+        exportTo: ['Asia', 'Europe']
       },
       {
         id: 'marcellus',
@@ -420,10 +638,14 @@ export const resources: ResourceMap = {
         lat: 40.5,
         lng: -78.5,
         type: 'field',
-        production: 300,
+        production: 350,
         unit: 'billion cubic meters/year',
         country: 'USA',
-        description: 'Largest US natural gas field'
+        description: 'Largest natural gas field in USA, spanning multiple states in Appalachia',
+        operator: 'Multiple operators',
+        established: 2005,
+        employees: 35000,
+        exportTo: ['USA domestic', 'Export as LNG']
       },
       {
         id: 'yamal',
@@ -431,168 +653,250 @@ export const resources: ResourceMap = {
         lat: 70.0,
         lng: 70.0,
         type: 'field',
-        production: 100,
+        production: 115,
         unit: 'billion cubic meters/year',
         country: 'Russia',
-        description: 'Major Arctic gas production'
+        description: 'Arctic megaproject, produces LNG for export to Asia and Europe',
+        operator: 'Novatek/Gazprom',
+        established: 2017,
+        employees: 8000,
+        exportTo: ['China', 'Japan', 'Europe']
+      },
+      {
+        id: 'groningen',
+        name: 'Groningen Field',
+        lat: 53.3,
+        lng: 6.7,
+        type: 'field',
+        production: 12,
+        unit: 'billion cubic meters/year',
+        country: 'Netherlands',
+        description: 'Europe\'s largest gas field, production winding down due to earthquake concerns',
+        operator: 'NAM',
+        established: 1959,
+        employees: 2000,
+        exportTo: ['Netherlands', 'Belgium', 'Germany']
+      },
+      {
+        id: 'qatargas',
+        name: 'Ras Laffan LNG',
+        lat: 25.9,
+        lng: 51.5,
+        type: 'plant',
+        capacity: 77,
+        unit: 'million tonnes LNG/year',
+        country: 'Qatar',
+        description: 'World\'s largest LNG export facility, critical to global gas trade',
+        operator: 'Qatar Energy',
+        established: 1996,
+        employees: 12000,
+        exportTo: ['Japan', 'South Korea', 'India', 'Europe']
       }
+    ],
+    supplyChains: [
+      { from: 'south-pars', to: 'qatargas', volume: 100, unit: 'billion cubic meters/year' }
     ]
   },
-  gold: {
-    id: 'gold',
-    name: 'Gold',
+  aluminium: {
+    id: 'aluminium',
+    name: 'Aluminium',
     category: 'metal',
-    color: '#FFD700',
-    unit: 'tonnes',
-    globalProduction: 3300,
-    globalConsumption: 3300,
-    description: 'Precious metal for jewelry, investment, and electronics',
+    color: '#A8A9AD',
+    unit: 'million tonnes',
+    globalProduction: 70,
+    globalConsumption: 70,
+    description: 'Lightweight versatile metal for aerospace, automotive, packaging, and construction applications',
+    majorProducers: ['China', 'India', 'Russia', 'Canada', 'UAE'],
+    majorConsumers: ['China', 'USA', 'Germany', 'Japan', 'India'],
+    uses: ['Transportation', 'Packaging', 'Construction', 'Electrical', 'Consumer goods'],
+    marketSize: '$160 billion',
+    pricePerUnit: '$2,300/tonne',
     locations: [
       {
-        id: 'nevada-gold',
-        name: 'Nevada Gold Mines',
-        lat: 40.5,
-        lng: -116.5,
+        id: 'weipa',
+        name: 'Weipa Bauxite Mine',
+        lat: -12.6667,
+        lng: 141.8667,
         type: 'mine',
-        production: 115,
-        unit: 'tonnes/year',
-        country: 'USA',
-        description: 'Largest gold mining complex in world'
-      },
-      {
-        id: 'muruntau',
-        name: 'Muruntau',
-        lat: 41.5667,
-        lng: 64.5833,
-        type: 'mine',
-        production: 66,
-        unit: 'tonnes/year',
-        country: 'Uzbekistan',
-        description: 'Largest open-pit gold mine'
-      },
-      {
-        id: 'boddington',
-        name: 'Boddington',
-        lat: -32.8,
-        lng: 116.5,
-        type: 'mine',
-        production: 26,
-        unit: 'tonnes/year',
+        production: 35,
+        unit: 'million tonnes bauxite/year',
         country: 'Australia',
-        description: 'Largest gold mine in Australia'
+        description: 'World\'s largest bauxite mine with reserves exceeding 3 billion tonnes',
+        operator: 'Rio Tinto',
+        established: 1963,
+        employees: 1200,
+        exportTo: ['China', 'Japan', 'South Korea']
+      },
+      {
+        id: 'guinea-bauxite',
+        name: 'Sangarédi Mine',
+        lat: 11.5833,
+        lng: -13.7167,
+        type: 'mine',
+        production: 35,
+        unit: 'million tonnes bauxite/year',
+        country: 'Guinea',
+        description: 'Major bauxite producer from world\'s largest bauxite reserves',
+        operator: 'CBG',
+        established: 1973,
+        employees: 3500,
+        exportTo: ['China', 'USA', 'Europe']
+      },
+      {
+        id: 'alcoa-portland',
+        name: 'Alcoa Portland Smelter',
+        lat: -38.3333,
+        lng: 141.6000,
+        type: 'plant',
+        production: 0.36,
+        unit: 'million tonnes/year',
+        country: 'Australia',
+        description: 'One of world\'s largest aluminium smelters, using renewable hydroelectric power',
+        operator: 'Alcoa',
+        established: 1986,
+        employees: 620
+      },
+      {
+        id: 'rusal-bratsk',
+        name: 'Bratsk Smelter',
+        lat: 56.15,
+        lng: 101.63,
+        type: 'plant',
+        production: 1.1,
+        unit: 'million tonnes/year',
+        country: 'Russia',
+        description: 'World\'s largest aluminium smelter powered by Siberian hydroelectricity',
+        operator: 'Rusal',
+        established: 1966,
+        employees: 6500
+      },
+      {
+        id: 'chalco-qinghai',
+        name: 'Chalco Qinghai',
+        lat: 36.6167,
+        lng: 101.7667,
+        type: 'plant',
+        production: 0.5,
+        unit: 'million tonnes/year',
+        country: 'China',
+        description: 'Large-scale aluminium smelter in high plateau region',
+        operator: 'Chalco',
+        established: 2007,
+        employees: 3000
       }
+    ],
+    supplyChains: [
+      { from: 'weipa', to: 'chalco-qinghai', volume: 15, unit: 'million tonnes bauxite/year' }
     ]
   },
-  silver: {
-    id: 'silver',
-    name: 'Silver',
+  nickel: {
+    id: 'nickel',
+    name: 'Nickel',
     category: 'metal',
-    color: '#C0C0C0',
+    color: '#727472',
     unit: 'thousand tonnes',
-    globalProduction: 27,
-    globalConsumption: 27,
-    description: 'Used in jewelry, electronics, and solar panels',
+    globalProduction: 3500,
+    globalConsumption: 3500,
+    description: 'Critical for stainless steel and increasingly important for EV battery cathodes',
+    majorProducers: ['Indonesia', 'Philippines', 'Russia', 'New Caledonia', 'Australia'],
+    majorConsumers: ['China', 'Japan', 'South Korea', 'USA', 'Germany'],
+    uses: ['Stainless steel', 'EV batteries', 'Superalloys', 'Electroplating', 'Coinage'],
+    marketSize: '$32 billion',
+    pricePerUnit: '$18,000/tonne',
     locations: [
       {
-        id: 'cannington',
-        name: 'Cannington Mine',
-        lat: -21.8333,
-        lng: 140.0667,
+        id: 'norilsk',
+        name: 'Norilsk-Talnakh',
+        lat: 69.3558,
+        lng: 88.2027,
         type: 'mine',
-        production: 1.2,
+        production: 175,
         unit: 'thousand tonnes/year',
-        country: 'Australia',
-        description: 'World\'s largest silver producer'
+        country: 'Russia',
+        description: 'World\'s largest nickel mining complex in Arctic Siberia, also produces copper, palladium, platinum',
+        operator: 'Norilsk Nickel',
+        established: 1935,
+        employees: 82000,
+        exportTo: ['China', 'Europe', 'USA']
       },
       {
-        id: 'fresnillo',
-        name: 'Fresnillo',
-        lat: 23.1667,
-        lng: -102.8667,
+        id: 'vale-sudbury',
+        name: 'Sudbury Basin',
+        lat: 46.49,
+        lng: -81.0,
         type: 'mine',
-        production: 0.9,
-        unit: 'thousand tonnes/year',
-        country: 'Mexico',
-        description: 'Major silver mine'
-      },
-      {
-        id: 'antamina',
-        name: 'Antamina',
-        lat: -9.35,
-        lng: -77.1,
-        type: 'mine',
-        production: 0.6,
-        unit: 'thousand tonnes/year',
-        country: 'Peru',
-        description: 'Large polymetallic mine'
-      }
-    ]
-  },
-  uranium: {
-    id: 'uranium',
-    name: 'Uranium',
-    category: 'element',
-    color: '#00FF00',
-    unit: 'thousand tonnes',
-    globalProduction: 50,
-    globalConsumption: 50,
-    description: 'Nuclear fuel for power generation',
-    locations: [
-      {
-        id: 'cigar-lake',
-        name: 'Cigar Lake',
-        lat: 58.05,
-        lng: -104.5,
-        type: 'mine',
-        production: 8,
+        production: 45,
         unit: 'thousand tonnes/year',
         country: 'Canada',
-        description: 'Highest grade uranium mine'
+        description: 'Historic nickel mining district, one of world\'s major nickel sulfide deposits',
+        operator: 'Vale/Glencore',
+        established: 1883,
+        employees: 4000,
+        exportTo: ['USA', 'Europe', 'Asia']
       },
       {
-        id: 'olympic-dam',
-        name: 'Olympic Dam',
-        lat: -30.4667,
-        lng: 136.8833,
+        id: 'sorowako',
+        name: 'Sorowako Mine',
+        lat: -2.5333,
+        lng: 121.3500,
         type: 'mine',
-        production: 4,
+        production: 75,
         unit: 'thousand tonnes/year',
-        country: 'Australia',
-        description: 'Large uranium by-product operation'
+        country: 'Indonesia',
+        description: 'Major nickel laterite operation on Sulawesi island',
+        operator: 'Vale Indonesia',
+        established: 1968,
+        employees: 6000,
+        exportTo: ['China', 'Japan', 'South Korea']
       },
       {
-        id: 'kazakhstan-mines',
-        name: 'Kazakhstan ISR Operations',
-        lat: 47.0,
-        lng: 67.0,
+        id: 'weda-bay',
+        name: 'Weda Bay',
+        lat: 0.38,
+        lng: 127.87,
         type: 'mine',
-        production: 20,
+        production: 80,
         unit: 'thousand tonnes/year',
-        country: 'Kazakhstan',
-        description: 'World\'s largest uranium producer'
+        country: 'Indonesia',
+        description: 'Large-scale laterite nickel mine, feeding Chinese stainless steel and battery industries',
+        operator: 'Tsingshan/Eramet',
+        established: 2019,
+        employees: 4500,
+        exportTo: ['China']
       }
+    ],
+    supplyChains: [
+      { from: 'sorowako', to: 'weda-bay', volume: 30, unit: 'thousand tonnes/year' }
     ]
   },
   steel: {
     id: 'steel',
     name: 'Steel',
     category: 'metal',
-    color: '#808080',
+    color: '#708090',
     unit: 'million tonnes',
-    globalProduction: 1900,
-    globalConsumption: 1900,
-    description: 'Foundation of modern infrastructure and manufacturing',
+    globalProduction: 1950,
+    globalConsumption: 1950,
+    description: 'Fundamental material for construction, infrastructure, automotive, and manufacturing industries',
+    majorProducers: ['China', 'India', 'Japan', 'USA', 'Russia'],
+    majorConsumers: ['China', 'India', 'USA', 'Japan', 'South Korea'],
+    uses: ['Construction', 'Automotive', 'Infrastructure', 'Machinery', 'Appliances'],
+    marketSize: '$950 billion',
+    pricePerUnit: '$600/tonne',
     locations: [
       {
         id: 'hebei-steel',
-        name: 'Hebei Iron & Steel',
+        name: 'Hebei Steel Region',
         lat: 38.04,
         lng: 114.48,
         type: 'plant',
-        production: 40,
+        production: 230,
         unit: 'million tonnes/year',
         country: 'China',
-        description: 'One of world\'s largest steelmakers'
+        description: 'Massive steel production cluster near Beijing, world\'s largest steel manufacturing region',
+        operator: 'Multiple operators',
+        established: 1950,
+        employees: 400000
       },
       {
         id: 'arcelormittal',
@@ -603,7 +907,10 @@ export const resources: ResourceMap = {
         production: 7,
         unit: 'million tonnes/year',
         country: 'France',
-        description: 'Major European steel mill'
+        description: 'Major European integrated steel mill, produces automotive and construction steel',
+        operator: 'ArcelorMittal',
+        established: 1962,
+        employees: 4200
       },
       {
         id: 'usiminas',
@@ -614,54 +921,260 @@ export const resources: ResourceMap = {
         production: 9,
         unit: 'million tonnes/year',
         country: 'Brazil',
-        description: 'Major Latin American steelmaker'
+        description: 'Major Latin American integrated steelmaker serving automotive and construction markets',
+        operator: 'Usiminas',
+        established: 1962,
+        employees: 12000
+      },
+      {
+        id: 'nippon-steel',
+        name: 'Nippon Steel Kimitsu',
+        lat: 35.33,
+        lng: 139.87,
+        type: 'plant',
+        production: 8,
+        unit: 'million tonnes/year',
+        country: 'Japan',
+        description: 'Advanced integrated steel mill producing high-quality automotive steel',
+        operator: 'Nippon Steel',
+        established: 1970,
+        employees: 5000
+      },
+      {
+        id: 'posco',
+        name: 'POSCO Pohang',
+        lat: 36.02,
+        lng: 129.37,
+        type: 'plant',
+        production: 21,
+        unit: 'million tonnes/year',
+        country: 'South Korea',
+        description: 'World-class integrated steel mill, one of most efficient producers globally',
+        operator: 'POSCO',
+        established: 1973,
+        employees: 11000
       }
-    ]
+    ],
+    supplyChains: []
   },
-  cement: {
-    id: 'cement',
-    name: 'Cement',
-    category: 'mineral',
-    color: '#B8B8B8',
-    unit: 'million tonnes',
-    globalProduction: 4100,
-    globalConsumption: 4100,
-    description: 'Essential building material for construction',
+  gold: {
+    id: 'gold',
+    name: 'Gold',
+    category: 'metal',
+    color: '#FFD700',
+    unit: 'tonnes',
+    globalProduction: 3300,
+    globalConsumption: 3300,
+    description: 'Precious metal for jewelry, investment, central bank reserves, and electronics',
+    majorProducers: ['China', 'Australia', 'Russia', 'USA', 'Canada'],
+    majorConsumers: ['China', 'India', 'USA', 'Germany', 'Turkey'],
+    uses: ['Jewelry', 'Investment', 'Central banks', 'Electronics', 'Dentistry'],
+    marketSize: '$250 billion',
+    pricePerUnit: '$60,000/kg',
     locations: [
       {
-        id: 'anhui-conch',
-        name: 'Anhui Conch Cement',
-        lat: 30.92,
-        lng: 117.77,
-        type: 'plant',
-        production: 350,
-        unit: 'million tonnes/year',
-        country: 'China',
-        description: 'World\'s largest cement producer'
-      },
-      {
-        id: 'lafarge-michigan',
-        name: 'Lafarge Alpena Plant',
-        lat: 45.07,
-        lng: -83.43,
-        type: 'plant',
-        production: 3,
-        unit: 'million tonnes/year',
+        id: 'nevada-gold',
+        name: 'Nevada Gold Mines',
+        lat: 40.5,
+        lng: -116.5,
+        type: 'mine',
+        production: 115,
+        unit: 'tonnes/year',
         country: 'USA',
-        description: 'Largest cement plant in USA'
+        description: 'World\'s largest gold mining complex, joint venture between Barrick and Newmont',
+        operator: 'Nevada Gold Mines JV',
+        established: 2019,
+        employees: 7000,
+        exportTo: ['Global refineries']
       },
       {
-        id: 'ultratech',
-        name: 'UltraTech Cement',
-        lat: 19.08,
-        lng: 72.88,
-        type: 'plant',
-        production: 120,
-        unit: 'million tonnes/year',
-        country: 'India',
-        description: 'Largest cement producer in India'
+        id: 'muruntau',
+        name: 'Muruntau',
+        lat: 41.5667,
+        lng: 64.5833,
+        type: 'mine',
+        production: 66,
+        unit: 'tonnes/year',
+        country: 'Uzbekistan',
+        description: 'Largest open-pit gold mine by area, one of deepest in the world',
+        operator: 'Navoi Mining',
+        established: 1967,
+        employees: 12000,
+        exportTo: ['Russia', 'Europe', 'Asia']
+      },
+      {
+        id: 'boddington',
+        name: 'Boddington',
+        lat: -32.8,
+        lng: 116.5,
+        type: 'mine',
+        production: 24,
+        unit: 'tonnes/year',
+        country: 'Australia',
+        description: 'Australia\'s largest gold mine, also produces copper',
+        operator: 'Newmont',
+        established: 2009,
+        employees: 1100,
+        exportTo: ['Australia', 'Asia']
+      },
+      {
+        id: 'olimpiada',
+        name: 'Olimpiada Mine',
+        lat: 58.4,
+        lng: 92.2,
+        type: 'mine',
+        production: 40,
+        unit: 'tonnes/year',
+        country: 'Russia',
+        description: 'Largest gold mine in Russia located in Siberia',
+        operator: 'Polyus',
+        established: 1996,
+        employees: 4000,
+        exportTo: ['Russia', 'Global markets']
       }
-    ]
+    ],
+    supplyChains: []
+  },
+  silver: {
+    id: 'silver',
+    name: 'Silver',
+    category: 'metal',
+    color: '#C0C0C0',
+    unit: 'thousand tonnes',
+    globalProduction: 27,
+    globalConsumption: 27,
+    description: 'Precious and industrial metal used in jewelry, electronics, solar panels, and photography',
+    majorProducers: ['Mexico', 'China', 'Peru', 'Chile', 'Australia'],
+    majorConsumers: ['USA', 'China', 'India', 'Japan', 'South Korea'],
+    uses: ['Industrial applications', 'Jewelry', 'Solar panels', 'Electronics', 'Investment'],
+    marketSize: '$25 billion',
+    pricePerUnit: '$24,000/tonne',
+    locations: [
+      {
+        id: 'cannington',
+        name: 'Cannington Mine',
+        lat: -21.8333,
+        lng: 140.0667,
+        type: 'mine',
+        production: 1.2,
+        unit: 'thousand tonnes/year',
+        country: 'Australia',
+        description: 'World\'s largest silver-lead-zinc mine by silver production',
+        operator: 'South32',
+        established: 1997,
+        employees: 550,
+        exportTo: ['China', 'Japan', 'South Korea']
+      },
+      {
+        id: 'fresnillo',
+        name: 'Fresnillo',
+        lat: 23.1667,
+        lng: -102.8667,
+        type: 'mine',
+        production: 0.95,
+        unit: 'thousand tonnes/year',
+        country: 'Mexico',
+        description: 'World\'s largest primary silver mine, operating since 16th century',
+        operator: 'Fresnillo plc',
+        established: 1554,
+        employees: 3500,
+        exportTo: ['USA', 'Europe', 'Asia']
+      },
+      {
+        id: 'antamina',
+        name: 'Antamina',
+        lat: -9.35,
+        lng: -77.1,
+        type: 'mine',
+        production: 0.6,
+        unit: 'thousand tonnes/year',
+        country: 'Peru',
+        description: 'Large polymetallic mine producing copper, zinc, and silver',
+        operator: 'Glencore/BHP/Teck',
+        established: 2001,
+        employees: 3200,
+        exportTo: ['China', 'Japan', 'Europe']
+      }
+    ],
+    supplyChains: []
+  },
+  uranium: {
+    id: 'uranium',
+    name: 'Uranium',
+    category: 'element',
+    color: '#00FF00',
+    unit: 'thousand tonnes',
+    globalProduction: 54,
+    globalConsumption: 54,
+    description: 'Nuclear fuel powering clean baseload electricity generation and naval propulsion',
+    majorProducers: ['Kazakhstan', 'Canada', 'Australia', 'Namibia', 'Niger'],
+    majorConsumers: ['USA', 'France', 'China', 'Russia', 'South Korea'],
+    uses: ['Nuclear power', 'Naval propulsion', 'Medical isotopes', 'Research'],
+    marketSize: '$5 billion',
+    pricePerUnit: '$80,000/tonne',
+    locations: [
+      {
+        id: 'cigar-lake',
+        name: 'Cigar Lake',
+        lat: 58.05,
+        lng: -104.5,
+        type: 'mine',
+        production: 8,
+        unit: 'thousand tonnes/year',
+        country: 'Canada',
+        description: 'World\'s highest grade uranium mine with 18% U3O8 grade',
+        operator: 'Cameco/Orano/Idemitsu',
+        established: 2014,
+        employees: 340,
+        exportTo: ['USA', 'Europe', 'Asia']
+      },
+      {
+        id: 'olympic-dam',
+        name: 'Olympic Dam',
+        lat: -30.4667,
+        lng: 136.8833,
+        type: 'mine',
+        production: 4,
+        unit: 'thousand tonnes/year',
+        country: 'Australia',
+        description: 'World\'s largest uranium deposit, by-product of copper production',
+        operator: 'BHP',
+        established: 1988,
+        employees: 4000,
+        exportTo: ['USA', 'Europe', 'Asia']
+      },
+      {
+        id: 'kazakhstan-isr',
+        name: 'Kazakhstan ISR Operations',
+        lat: 47.0,
+        lng: 67.0,
+        type: 'mine',
+        production: 22,
+        unit: 'thousand tonnes/year',
+        country: 'Kazakhstan',
+        description: 'World\'s largest uranium producer using in-situ recovery method',
+        operator: 'Kazatomprom',
+        established: 1997,
+        employees: 25000,
+        exportTo: ['China', 'Russia', 'Europe', 'USA']
+      },
+      {
+        id: 'ranger',
+        name: 'Ranger Mine',
+        lat: -12.7,
+        lng: 132.9,
+        type: 'mine',
+        production: 1.5,
+        unit: 'thousand tonnes/year',
+        country: 'Australia',
+        description: 'Historic uranium mine in Northern Territory, now in rehabilitation',
+        operator: 'Energy Resources of Australia',
+        established: 1980,
+        employees: 500,
+        exportTo: ['Japan', 'Europe', 'USA']
+      }
+    ],
+    supplyChains: []
   },
   rare_earths: {
     id: 'rare_earths',
@@ -669,9 +1182,14 @@ export const resources: ResourceMap = {
     category: 'element',
     color: '#FF69B4',
     unit: 'thousand tonnes',
-    globalProduction: 280,
-    globalConsumption: 280,
-    description: 'Critical for electronics, magnets, and green technology',
+    globalProduction: 300,
+    globalConsumption: 300,
+    description: 'Critical elements for magnets, catalysts, electronics, and green technology applications',
+    majorProducers: ['China', 'USA', 'Myanmar', 'Australia', 'India'],
+    majorConsumers: ['China', 'Japan', 'USA', 'Germany', 'South Korea'],
+    uses: ['Permanent magnets', 'Catalysts', 'Electronics', 'Batteries', 'Lasers'],
+    marketSize: '$8 billion',
+    pricePerUnit: '$25,000/tonne',
     locations: [
       {
         id: 'bayan-obo',
@@ -679,10 +1197,14 @@ export const resources: ResourceMap = {
         lat: 41.77,
         lng: 109.97,
         type: 'mine',
-        production: 140,
+        production: 170,
         unit: 'thousand tonnes/year',
         country: 'China',
-        description: 'World\'s largest rare earth mine'
+        description: 'World\'s largest rare earth mine, supplies 80% of China\'s REE production',
+        operator: 'China Northern Rare Earth Group',
+        established: 1957,
+        employees: 12000,
+        exportTo: ['China domestic processing']
       },
       {
         id: 'mountain-pass',
@@ -690,10 +1212,14 @@ export const resources: ResourceMap = {
         lat: 35.48,
         lng: -115.53,
         type: 'mine',
-        production: 38,
+        production: 43,
         unit: 'thousand tonnes/year',
         country: 'USA',
-        description: 'Largest rare earth mine outside China'
+        description: 'Largest rare earth mine outside China, restarted to reduce US dependence on Chinese REEs',
+        operator: 'MP Materials',
+        established: 1952,
+        employees: 400,
+        exportTo: ['China', 'USA']
       },
       {
         id: 'mount-weld',
@@ -701,11 +1227,32 @@ export const resources: ResourceMap = {
         lat: -28.87,
         lng: 122.38,
         type: 'mine',
-        production: 15,
+        production: 18,
         unit: 'thousand tonnes/year',
         country: 'Australia',
-        description: 'High-grade rare earth deposit'
+        description: 'High-grade rare earth deposit, one of richest known deposits globally',
+        operator: 'Lynas Rare Earths',
+        established: 2011,
+        employees: 250,
+        exportTo: ['Malaysia for processing']
+      },
+      {
+        id: 'lynas-malaysia',
+        name: 'Lynas Processing Plant',
+        lat: 3.6,
+        lng: 103.3,
+        type: 'refinery',
+        capacity: 20,
+        unit: 'thousand tonnes/year',
+        country: 'Malaysia',
+        description: 'Major rare earth processing facility outside China',
+        operator: 'Lynas Rare Earths',
+        established: 2012,
+        employees: 1000
       }
+    ],
+    supplyChains: [
+      { from: 'mount-weld', to: 'lynas-malaysia', volume: 18, unit: 'thousand tonnes/year' }
     ]
   },
   cobalt: {
@@ -714,9 +1261,14 @@ export const resources: ResourceMap = {
     category: 'metal',
     color: '#0047AB',
     unit: 'thousand tonnes',
-    globalProduction: 190,
-    globalConsumption: 190,
-    description: 'Critical for lithium-ion batteries and superalloys',
+    globalProduction: 210,
+    globalConsumption: 210,
+    description: 'Critical battery material for electric vehicles, superalloys for jet engines, and catalysts',
+    majorProducers: ['DRC', 'Russia', 'Australia', 'Philippines', 'Canada'],
+    majorConsumers: ['China', 'Japan', 'South Korea', 'USA', 'Belgium'],
+    uses: ['Lithium-ion batteries', 'Superalloys', 'Catalysts', 'Magnets', 'Pigments'],
+    marketSize: '$8 billion',
+    pricePerUnit: '$35,000/tonne',
     locations: [
       {
         id: 'tenke-fungurume',
@@ -727,7 +1279,11 @@ export const resources: ResourceMap = {
         production: 18,
         unit: 'thousand tonnes/year',
         country: 'DRC',
-        description: 'Major cobalt producer'
+        description: 'Major copper-cobalt mine in DRC\'s Copperbelt region',
+        operator: 'China Molybdenum',
+        established: 2009,
+        employees: 8000,
+        exportTo: ['China', 'South Korea', 'Japan']
       },
       {
         id: 'mutanda',
@@ -738,7 +1294,11 @@ export const resources: ResourceMap = {
         production: 27,
         unit: 'thousand tonnes/year',
         country: 'DRC',
-        description: 'World\'s largest cobalt mine'
+        description: 'World\'s largest cobalt mine, temporarily closed but restarting production',
+        operator: 'Glencore',
+        established: 2008,
+        employees: 6500,
+        exportTo: ['China', 'Europe', 'USA']
       },
       {
         id: 'vale-voiseys',
@@ -749,9 +1309,29 @@ export const resources: ResourceMap = {
         production: 3,
         unit: 'thousand tonnes/year',
         country: 'Canada',
-        description: 'Major nickel-cobalt mine'
+        description: 'Major nickel-copper-cobalt mine in Labrador',
+        operator: 'Vale',
+        established: 2005,
+        employees: 600,
+        exportTo: ['Canada', 'Europe', 'Asia']
+      },
+      {
+        id: 'koniambo',
+        name: 'Koniambo',
+        lat: -21.05,
+        lng: 164.8,
+        type: 'mine',
+        production: 2.5,
+        unit: 'thousand tonnes/year',
+        country: 'New Caledonia',
+        description: 'Large nickel-cobalt laterite project',
+        operator: 'Glencore',
+        established: 2013,
+        employees: 1600,
+        exportTo: ['China', 'Japan', 'South Korea']
       }
-    ]
+    ],
+    supplyChains: []
   },
   zinc: {
     id: 'zinc',
@@ -761,7 +1341,12 @@ export const resources: ResourceMap = {
     unit: 'million tonnes',
     globalProduction: 13,
     globalConsumption: 13,
-    description: 'Used for galvanizing steel and in batteries',
+    description: 'Corrosion-resistant coating for steel (galvanizing), alloys, and battery applications',
+    majorProducers: ['China', 'Peru', 'Australia', 'India', 'USA'],
+    majorConsumers: ['China', 'USA', 'India', 'Japan', 'South Korea'],
+    uses: ['Galvanizing steel', 'Die-casting alloys', 'Brass', 'Batteries', 'Chemicals'],
+    marketSize: '$40 billion',
+    pricePerUnit: '$2,800/tonne',
     locations: [
       {
         id: 'red-dog',
@@ -772,7 +1357,11 @@ export const resources: ResourceMap = {
         production: 0.6,
         unit: 'million tonnes/year',
         country: 'USA',
-        description: 'World\'s largest zinc mine'
+        description: 'World\'s largest zinc mine by production, Arctic operation in Alaska',
+        operator: 'Teck Resources',
+        established: 1989,
+        employees: 450,
+        exportTo: ['Asia', 'Europe']
       },
       {
         id: 'rampura-agucha',
@@ -780,23 +1369,47 @@ export const resources: ResourceMap = {
         lat: 27.6,
         lng: 74.7,
         type: 'mine',
-        production: 0.5,
+        production: 0.45,
         unit: 'million tonnes/year',
         country: 'India',
-        description: 'Major zinc-lead mine'
+        description: 'One of world\'s largest open-pit zinc-lead mines',
+        operator: 'Hindustan Zinc',
+        established: 1993,
+        employees: 2500,
+        exportTo: ['India', 'Asia']
       },
       {
         id: 'antamina-zinc',
-        name: 'Antamina (Zinc)',
+        name: 'Antamina',
         lat: -9.35,
         lng: -77.1,
         type: 'mine',
         production: 0.4,
         unit: 'million tonnes/year',
         country: 'Peru',
-        description: 'Large zinc producer'
+        description: 'Major polymetallic mine producing copper, zinc, silver, lead',
+        operator: 'Glencore/BHP/Teck',
+        established: 2001,
+        employees: 3200,
+        exportTo: ['China', 'Europe', 'USA']
+      },
+      {
+        id: 'century',
+        name: 'Mount Isa Mines',
+        lat: -20.73,
+        lng: 139.5,
+        type: 'mine',
+        production: 0.3,
+        unit: 'million tonnes/year',
+        country: 'Australia',
+        description: 'Historic zinc-lead-silver mining district in Queensland',
+        operator: 'Glencore',
+        established: 1931,
+        employees: 3500,
+        exportTo: ['Asia', 'Europe']
       }
-    ]
+    ],
+    supplyChains: []
   },
   phosphate: {
     id: 'phosphate',
@@ -804,10 +1417,30 @@ export const resources: ResourceMap = {
     category: 'mineral',
     color: '#DAA520',
     unit: 'million tonnes',
-    globalProduction: 230,
-    globalConsumption: 230,
-    description: 'Essential for fertilizers and food production',
+    globalProduction: 240,
+    globalConsumption: 240,
+    description: 'Essential nutrient for fertilizers, critical for global food security and agricultural productivity',
+    majorProducers: ['China', 'Morocco', 'USA', 'Russia', 'Peru'],
+    majorConsumers: ['China', 'India', 'USA', 'Brazil', 'Pakistan'],
+    uses: ['Fertilizers', 'Animal feed', 'Food additives', 'Detergents', 'Flame retardants'],
+    marketSize: '$60 billion',
+    pricePerUnit: '$100/tonne',
     locations: [
+      {
+        id: 'khouribga',
+        name: 'Khouribga',
+        lat: 32.88,
+        lng: -6.91,
+        type: 'mine',
+        production: 38,
+        unit: 'million tonnes/year',
+        country: 'Morocco',
+        description: 'World\'s largest phosphate mine, Morocco holds 70% of global phosphate reserves',
+        operator: 'OCP Group',
+        established: 1921,
+        employees: 20000,
+        exportTo: ['India', 'Brazil', 'Europe', 'USA']
+      },
       {
         id: 'bou-craa',
         name: 'Bou Craa',
@@ -817,31 +1450,44 @@ export const resources: ResourceMap = {
         production: 2,
         unit: 'million tonnes/year',
         country: 'Western Sahara',
-        description: 'Large phosphate deposit'
-      },
-      {
-        id: 'khouribga',
-        name: 'Khouribga',
-        lat: 32.88,
-        lng: -6.91,
-        type: 'mine',
-        production: 20,
-        unit: 'million tonnes/year',
-        country: 'Morocco',
-        description: 'World\'s largest phosphate reserve'
+        description: 'Large phosphate deposit with 100km conveyor belt to coast',
+        operator: 'OCP Group',
+        established: 1976,
+        employees: 2000,
+        exportTo: ['Europe', 'Asia']
       },
       {
         id: 'mosaic-florida',
-        name: 'Mosaic Phosphate Mines',
+        name: 'Mosaic Florida Operations',
         lat: 27.8,
         lng: -81.8,
         type: 'mine',
         production: 10,
         unit: 'million tonnes/year',
         country: 'USA',
-        description: 'Major US phosphate producer'
+        description: 'Major US phosphate producer with multiple mines in central Florida',
+        operator: 'Mosaic Company',
+        established: 1950,
+        employees: 3000,
+        exportTo: ['USA', 'Latin America']
+      },
+      {
+        id: 'yunnan-phosphate',
+        name: 'Yunnan Phosphate District',
+        lat: 24.5,
+        lng: 103.0,
+        type: 'mine',
+        production: 28,
+        unit: 'million tonnes/year',
+        country: 'China',
+        description: 'Major phosphate mining region in southwestern China',
+        operator: 'Multiple operators',
+        established: 1965,
+        employees: 45000,
+        exportTo: ['China domestic']
       }
-    ]
+    ],
+    supplyChains: []
   },
   potash: {
     id: 'potash',
@@ -849,31 +1495,59 @@ export const resources: ResourceMap = {
     category: 'mineral',
     color: '#FF6347',
     unit: 'million tonnes',
-    globalProduction: 45,
-    globalConsumption: 45,
-    description: 'Key fertilizer component for agriculture',
+    globalProduction: 48,
+    globalConsumption: 48,
+    description: 'Key fertilizer component providing potassium, essential for crop growth and food production',
+    majorProducers: ['Canada', 'Russia', 'Belarus', 'China', 'Germany'],
+    majorConsumers: ['China', 'USA', 'Brazil', 'India', 'Indonesia'],
+    uses: ['Fertilizers', 'Industrial chemicals', 'Food processing', 'Soap manufacturing'],
+    marketSize: '$22 billion',
+    pricePerUnit: '$280/tonne',
     locations: [
       {
         id: 'saskatchewan',
-        name: 'Saskatchewan Potash Mines',
+        name: 'Saskatchewan Potash Belt',
         lat: 52.1,
         lng: -106.6,
         type: 'mine',
-        production: 13,
+        production: 20,
         unit: 'million tonnes/year',
         country: 'Canada',
-        description: 'World\'s largest potash producing region'
+        description: 'World\'s largest and highest quality potash deposits, supplies 30% of global production',
+        operator: 'Multiple operators',
+        established: 1962,
+        employees: 8000,
+        exportTo: ['USA', 'China', 'Brazil', 'India']
       },
       {
         id: 'berezniki',
-        name: 'Berezniki Mine',
+        name: 'Berezniki & Solikamsk',
         lat: 59.4,
         lng: 56.8,
         type: 'mine',
-        production: 7,
+        production: 11,
         unit: 'million tonnes/year',
         country: 'Russia',
-        description: 'Major potash producer'
+        description: 'Major potash mining region in Urals, world\'s oldest potash operations',
+        operator: 'Uralkali',
+        established: 1934,
+        employees: 12000,
+        exportTo: ['China', 'Brazil', 'India', 'Europe']
+      },
+      {
+        id: 'soligorsk',
+        name: 'Soligorsk',
+        lat: 52.79,
+        lng: 27.55,
+        type: 'mine',
+        production: 10,
+        unit: 'million tonnes/year',
+        country: 'Belarus',
+        description: 'Large potash mining complex, Belarus is world\'s 3rd largest producer',
+        operator: 'Belaruskali',
+        established: 1963,
+        employees: 18000,
+        exportTo: ['China', 'Brazil', 'India', 'Europe']
       },
       {
         id: 'dead-sea',
@@ -884,9 +1558,14 @@ export const resources: ResourceMap = {
         production: 2,
         unit: 'million tonnes/year',
         country: 'Israel',
-        description: 'Potash from Dead Sea evaporation'
+        description: 'Unique potash production from Dead Sea evaporation ponds',
+        operator: 'ICL Group',
+        established: 1952,
+        employees: 1700,
+        exportTo: ['China', 'India', 'Europe']
       }
-    ]
+    ],
+    supplyChains: []
   },
   platinum: {
     id: 'platinum',
@@ -896,7 +1575,12 @@ export const resources: ResourceMap = {
     unit: 'tonnes',
     globalProduction: 190,
     globalConsumption: 190,
-    description: 'Precious metal for catalytic converters and jewelry',
+    description: 'Precious metal for catalytic converters, jewelry, fuel cells, and chemical catalysts',
+    majorProducers: ['South Africa', 'Russia', 'Zimbabwe', 'Canada', 'USA'],
+    majorConsumers: ['China', 'Europe', 'Japan', 'USA', 'India'],
+    uses: ['Catalytic converters', 'Jewelry', 'Fuel cells', 'Chemical catalysts', 'Electronics'],
+    marketSize: '$8 billion',
+    pricePerUnit: '$30,000/kg',
     locations: [
       {
         id: 'bushveld',
@@ -904,21 +1588,29 @@ export const resources: ResourceMap = {
         lat: -25.0,
         lng: 29.0,
         type: 'mine',
-        production: 120,
+        production: 130,
         unit: 'tonnes/year',
         country: 'South Africa',
-        description: 'World\'s largest platinum deposit'
+        description: 'World\'s largest platinum deposit containing 75% of global reserves',
+        operator: 'Multiple operators',
+        established: 1924,
+        employees: 150000,
+        exportTo: ['Europe', 'China', 'USA', 'Japan']
       },
       {
         id: 'norilsk-platinum',
-        name: 'Norilsk Nickel (Platinum)',
+        name: 'Norilsk Nickel PGMs',
         lat: 69.3558,
         lng: 88.2027,
         type: 'mine',
-        production: 20,
+        production: 21,
         unit: 'tonnes/year',
         country: 'Russia',
-        description: 'Major platinum group metals producer'
+        description: 'Major platinum group metals producer as by-product of nickel-copper mining',
+        operator: 'Norilsk Nickel',
+        established: 1935,
+        employees: 82000,
+        exportTo: ['Europe', 'China', 'USA']
       },
       {
         id: 'stillwater',
@@ -926,12 +1618,17 @@ export const resources: ResourceMap = {
         lat: 45.4,
         lng: -109.9,
         type: 'mine',
-        production: 15,
+        production: 13,
         unit: 'tonnes/year',
         country: 'USA',
-        description: 'Largest US platinum mine'
+        description: 'Largest US source of platinum and palladium',
+        operator: 'Sibanye-Stillwater',
+        established: 1986,
+        employees: 1700,
+        exportTo: ['USA', 'Europe']
       }
-    ]
+    ],
+    supplyChains: []
   },
   manganese: {
     id: 'manganese',
@@ -939,9 +1636,14 @@ export const resources: ResourceMap = {
     category: 'metal',
     color: '#E30B5D',
     unit: 'million tonnes',
-    globalProduction: 20,
-    globalConsumption: 20,
-    description: 'Essential for steel production and batteries',
+    globalProduction: 21,
+    globalConsumption: 21,
+    description: 'Essential for steel production as deoxidizer and alloying element, increasingly used in batteries',
+    majorProducers: ['South Africa', 'Australia', 'Gabon', 'China', 'Brazil'],
+    majorConsumers: ['China', 'India', 'Japan', 'South Korea', 'USA'],
+    uses: ['Steelmaking', 'Batteries', 'Aluminum alloys', 'Fertilizers', 'Pigments'],
+    marketSize: '$18 billion',
+    pricePerUnit: '$2,200/tonne',
     locations: [
       {
         id: 'kalahari',
@@ -949,21 +1651,29 @@ export const resources: ResourceMap = {
         lat: -27.3,
         lng: 22.9,
         type: 'mine',
-        production: 7,
+        production: 7.5,
         unit: 'million tonnes/year',
         country: 'South Africa',
-        description: 'World\'s largest manganese field'
+        description: 'World\'s largest manganese field containing 70% of global reserves',
+        operator: 'Multiple operators',
+        established: 1940,
+        employees: 12000,
+        exportTo: ['China', 'India', 'Japan', 'Europe']
       },
       {
         id: 'carajas-manganese',
-        name: 'Carajás (Manganese)',
+        name: 'Carajás Manganese',
         lat: -6.0667,
         lng: -50.2000,
         type: 'mine',
-        production: 2,
+        production: 2.5,
         unit: 'million tonnes/year',
         country: 'Brazil',
-        description: 'Major manganese producer'
+        description: 'Major manganese producer in Amazon region',
+        operator: 'Vale',
+        established: 1985,
+        employees: 1200,
+        exportTo: ['China', 'USA', 'Europe']
       },
       {
         id: 'groote-eylandt',
@@ -971,11 +1681,105 @@ export const resources: ResourceMap = {
         lat: -13.95,
         lng: 136.5,
         type: 'mine',
-        production: 3,
+        production: 3.8,
         unit: 'million tonnes/year',
         country: 'Australia',
-        description: 'High-grade manganese mine'
+        description: 'High-grade manganese deposit, world\'s second largest producer',
+        operator: 'South32',
+        established: 1966,
+        employees: 600,
+        exportTo: ['China', 'Japan', 'South Korea']
+      },
+      {
+        id: 'moanda',
+        name: 'Moanda',
+        lat: -1.57,
+        lng: 13.2,
+        type: 'mine',
+        production: 2.5,
+        unit: 'million tonnes/year',
+        country: 'Gabon',
+        description: 'One of world\'s richest manganese deposits',
+        operator: 'Comilog',
+        established: 1962,
+        employees: 1800,
+        exportTo: ['China', 'Europe', 'USA']
       }
-    ]
+    ],
+    supplyChains: []
+  },
+  cement: {
+    id: 'cement',
+    name: 'Cement',
+    category: 'mineral',
+    color: '#B8B8B8',
+    unit: 'million tonnes',
+    globalProduction: 4400,
+    globalConsumption: 4400,
+    description: 'Fundamental binding material for concrete, enabling all modern construction and infrastructure',
+    majorProducers: ['China', 'India', 'Vietnam', 'USA', 'Turkey'],
+    majorConsumers: ['China', 'India', 'USA', 'Indonesia', 'Brazil'],
+    uses: ['Concrete', 'Mortar', 'Infrastructure', 'Buildings', 'Dams'],
+    marketSize: '$340 billion',
+    pricePerUnit: '$110/tonne',
+    locations: [
+      {
+        id: 'anhui-conch',
+        name: 'Anhui Conch Cement',
+        lat: 30.92,
+        lng: 117.77,
+        type: 'plant',
+        production: 380,
+        unit: 'million tonnes/year',
+        country: 'China',
+        description: 'World\'s largest cement producer with operations across China',
+        operator: 'Anhui Conch Cement',
+        established: 1997,
+        employees: 45000
+      },
+      {
+        id: 'lafarge-michigan',
+        name: 'Lafarge Alpena Plant',
+        lat: 45.07,
+        lng: -83.43,
+        type: 'plant',
+        production: 3,
+        unit: 'million tonnes/year',
+        country: 'USA',
+        description: 'Largest cement plant in USA on Lake Huron',
+        operator: 'Holcim',
+        established: 1908,
+        employees: 400
+      },
+      {
+        id: 'ultratech',
+        name: 'UltraTech Cement',
+        lat: 19.08,
+        lng: 72.88,
+        type: 'plant',
+        production: 125,
+        unit: 'million tonnes/year',
+        country: 'India',
+        description: 'India\'s largest cement producer with plants across the country',
+        operator: 'UltraTech Cement',
+        established: 2000,
+        employees: 12000
+      },
+      {
+        id: 'lafarge-egypt',
+        name: 'LafargeHolcim Egypt',
+        lat: 30.04,
+        lng: 31.24,
+        type: 'plant',
+        production: 8,
+        unit: 'million tonnes/year',
+        country: 'Egypt',
+        description: 'Major cement producer in North Africa',
+        operator: 'Holcim',
+        established: 1999,
+        employees: 3000
+      }
+    ],
+    supplyChains: []
   }
 };
