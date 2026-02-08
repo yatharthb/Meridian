@@ -1,12 +1,13 @@
-import { MapContainer, TileLayer, CircleMarker, Popup, Polyline } from 'react-leaflet';
-import { Resource } from '../types';
+import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import { Resource, LocationTypeFilter } from '../types';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
   resource: Resource | null;
+  locationTypeFilters: LocationTypeFilter;
 }
 
-export function Map({ resource }: MapProps) {
+export function Map({ resource, locationTypeFilters }: MapProps) {
   const getLocationIcon = (type: string) => {
     const icons: Record<string, string> = {
       mine: '⛏️',
@@ -32,25 +33,9 @@ export function Map({ resource }: MapProps) {
     return 6;
   };
 
-  const getSupplyChainLines = () => {
-    if (!resource || !resource.supplyChains) return [];
-
-    return resource.supplyChains.map((chain, index) => {
-      const fromLocation = resource.locations.find(loc => loc.id === chain.from);
-      const toLocation = resource.locations.find(loc => loc.id === chain.to);
-
-      if (!fromLocation || !toLocation) return null;
-
-      return {
-        positions: [
-          [fromLocation.lat, fromLocation.lng],
-          [toLocation.lat, toLocation.lng]
-        ] as [[number, number], [number, number]],
-        volume: chain.volume,
-        key: `${chain.from}-${chain.to}-${index}`
-      };
-    }).filter(Boolean);
-  };
+  const filteredLocations = resource?.locations.filter(
+    location => locationTypeFilters[location.type]
+  ) || [];
 
   return (
     <div style={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -67,22 +52,8 @@ export function Map({ resource }: MapProps) {
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
         />
 
-        {/* Supply Chain Flow Lines */}
-        {getSupplyChainLines().map((line: any) => line && (
-          <Polyline
-            key={line.key}
-            positions={line.positions}
-            pathOptions={{
-              color: resource?.color || '#667eea',
-              weight: 2,
-              opacity: 0.6,
-              dashArray: '10, 10',
-            }}
-          />
-        ))}
-
         {/* Location Markers */}
-        {resource?.locations.map((location) => (
+        {filteredLocations.map((location) => (
           <CircleMarker
             key={location.id}
             center={[location.lat, location.lng]}
@@ -170,11 +141,11 @@ export function Map({ resource }: MapProps) {
       </MapContainer>
 
       {/* Map Legend */}
-      {resource && (
+      {resource && filteredLocations.length > 0 && (
         <div className="map-legend">
-          <div className="legend-title">Location Types</div>
+          <div className="legend-title">Showing {filteredLocations.length} Locations</div>
           <div className="legend-items">
-            {Array.from(new Set(resource.locations.map(l => l.type))).map((type) => (
+            {Array.from(new Set(filteredLocations.map(l => l.type))).map((type) => (
               <div key={type} className="legend-item">
                 <div
                   className="legend-icon"

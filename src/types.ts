@@ -16,13 +16,6 @@ export interface Location {
   exportTo?: string[];
 }
 
-export interface SupplyChain {
-  from: string;
-  to: string;
-  volume: number;
-  unit: string;
-}
-
 export interface Resource {
   id: string;
   name: string;
@@ -30,7 +23,6 @@ export interface Resource {
   color: string;
   unit: string;
   locations: Location[];
-  supplyChains: SupplyChain[];
   globalProduction: number;
   globalConsumption: number;
   description: string;
@@ -42,3 +34,9 @@ export interface Resource {
 }
 
 export type ResourceMap = Record<string, Resource>;
+
+export type LocationType = 'mine' | 'refinery' | 'plant' | 'consumer' | 'port' | 'field' | 'hub';
+
+export interface LocationTypeFilter {
+  [key: string]: boolean;
+}

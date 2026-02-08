@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Map } from './components/Map';
 import { resources } from './data/resources';
-import { Resource } from './types';
+import { Resource, LocationTypeFilter } from './types';
 import './App.css';
 
 function App() {
@@ -9,6 +9,15 @@ function App() {
     resources.copper
   );
   const [searchQuery, setSearchQuery] = useState('');
+  const [locationTypeFilters, setLocationTypeFilters] = useState<LocationTypeFilter>({
+    mine: true,
+    field: true,
+    refinery: false,
+    plant: false,
+    consumer: false,
+    port: false,
+    hub: false,
+  });
 
   const resourcesByCategory = useMemo(() => ({
     energy: Object.values(resources).filter(r => r.category === 'energy'),
@@ -31,6 +40,16 @@ function App() {
     element: '🔬',
   };
 
+  const locationTypeLabels: Record<string, { label: string; icon: string; description: string }> = {
+    mine: { label: 'Mining', icon: '⛏️', description: 'Ore extraction and mining operations' },
+    field: { label: 'Fields', icon: '🛢️', description: 'Oil & gas field production' },
+    refinery: { label: 'Refining', icon: '🏭', description: 'Processing and refining facilities' },
+    plant: { label: 'Manufacturing', icon: '🏗️', description: 'Smelting and manufacturing plants' },
+    port: { label: 'Ports', icon: '⚓', description: 'Major shipping and distribution hubs' },
+    consumer: { label: 'Consumption', icon: '🏙️', description: 'Major consumption centers' },
+    hub: { label: 'Hubs', icon: '🌐', description: 'Trading and distribution hubs' },
+  };
+
   const filteredCategories = useMemo(() => {
     if (!searchQuery.trim()) return resourcesByCategory;
 
@@ -50,6 +69,17 @@ function App() {
 
   const totalResources = Object.values(resourcesByCategory).flat().length;
   const totalLocations = Object.values(resources).reduce((sum, r) => sum + r.locations.length, 0);
+
+  const toggleLocationTypeFilter = (type: string) => {
+    setLocationTypeFilters(prev => ({
+      ...prev,
+      [type]: !prev[type]
+    }));
+  };
+
+  const visibleLocationCount = selectedResource?.locations.filter(
+    loc => locationTypeFilters[loc.type]
+  ).length || 0;
 
   return (
     <div className="app">
@@ -85,6 +115,33 @@ function App() {
                 <span className="stat-unit-small">sites</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Location Type Filters */}
+        <div className="filter-section">
+          <div className="filter-header">
+            <span className="filter-title">Supply Chain Levels</span>
+            <span className="filter-count">{visibleLocationCount} visible</span>
+          </div>
+          <div className="filter-toggles">
+            {Object.entries(locationTypeLabels).map(([type, info]) => {
+              const count = selectedResource?.locations.filter(loc => loc.type === type).length || 0;
+              if (count === 0) return null;
+
+              return (
+                <button
+                  key={type}
+                  className={`filter-toggle ${locationTypeFilters[type] ? 'active' : ''}`}
+                  onClick={() => toggleLocationTypeFilter(type)}
+                  title={info.description}
+                >
+                  <span className="toggle-icon">{info.icon}</span>
+                  <span className="toggle-label">{info.label}</span>
+                  <span className="toggle-count">{count}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -129,7 +186,7 @@ function App() {
       </div>
 
       <div className="map-container">
-        <Map resource={selectedResource} />
+        <Map resource={selectedResource} locationTypeFilters={locationTypeFilters} />
 
         {selectedResource && (
           <div className="info-panel">
@@ -158,17 +215,17 @@ function App() {
                 </div>
               </div>
               <div className="stat-item">
-                <div className="stat-label">Tracked Sites</div>
+                <div className="stat-label">Total Sites</div>
                 <div className="stat-value">
                   {selectedResource.locations.length}
                   <span className="stat-unit">locations</span>
                 </div>
               </div>
               <div className="stat-item">
-                <div className="stat-label">Supply Chains</div>
+                <div className="stat-label">Visible Sites</div>
                 <div className="stat-value">
-                  {selectedResource.supplyChains.length}
-                  <span className="stat-unit">flows</span>
+                  {visibleLocationCount}
+                  <span className="stat-unit">shown</span>
                 </div>
               </div>
             </div>
