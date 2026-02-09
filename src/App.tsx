@@ -1,95 +1,126 @@
 import { useState, useMemo } from 'react';
-import { Map } from './components/Map';
+import { WorldMap } from './components/WorldMap';
 import { resources } from './data/resources';
-import { Resource, LocationTypeFilter } from './types';
+import { Resource, ResourceCategory, LocationType, locationTypeLabels, categoryLabels, formatNumber } from './types';
 import './App.css';
 
 function App() {
+  const resourceList = Object.values(resources);
   const [selectedResource, setSelectedResource] = useState<Resource | null>(
-    resources.copper
+    resourceList[0] || null
   );
   const [searchQuery, setSearchQuery] = useState('');
-  const [locationTypeFilters, setLocationTypeFilters] = useState<LocationTypeFilter>({
-    mine: true,
-    field: true,
-    refinery: false,
-    plant: false,
-    consumer: false,
-    port: false,
-    hub: false,
-  });
+  const [activeCategory, setActiveCategory] = useState<ResourceCategory | 'all'>('all');
+  const [activeLocationTypes, setActiveLocationTypes] = useState<Set<LocationType>>(
+    new Set(['mine', 'field'])
+  );
+  const [isInfoMinimized, setIsInfoMinimized] = useState(false);
+  const [isCountryMinimized, setIsCountryMinimized] = useState(false);
 
-  const resourcesByCategory = useMemo(() => ({
-    energy: Object.values(resources).filter(r => r.category === 'energy'),
-    metal: Object.values(resources).filter(r => r.category === 'metal'),
-    mineral: Object.values(resources).filter(r => r.category === 'mineral'),
-    element: Object.values(resources).filter(r => r.category === 'element'),
-  }), []);
-
-  const categoryLabels: Record<string, string> = {
-    energy: 'Energy Resources',
-    metal: 'Metals',
-    mineral: 'Minerals',
-    element: 'Elements',
+  const toggleLocationType = (type: LocationType) => {
+    const newTypes = new Set(activeLocationTypes);
+    if (newTypes.has(type)) {
+      newTypes.delete(type);
+    } else {
+      newTypes.add(type);
+    }
+    setActiveLocationTypes(newTypes);
   };
 
-  const categoryIcons: Record<string, string> = {
-    energy: '⚡',
-    metal: '⚙️',
-    mineral: '💎',
-    element: '🔬',
-  };
+  const filteredResources = useMemo(() => {
+    return resourceList.filter((r) => {
+      const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesCategory = activeCategory === 'all' || r.category === activeCategory;
+      return matchesSearch && matchesCategory;
+    });
+  }, [resourceList, searchQuery, activeCategory]);
 
-  const locationTypeLabels: Record<string, { label: string; icon: string; description: string }> = {
-    mine: { label: 'Mining', icon: '⛏️', description: 'Ore extraction and mining operations' },
-    field: { label: 'Fields', icon: '🛢️', description: 'Oil & gas field production' },
-    refinery: { label: 'Refining', icon: '🏭', description: 'Processing and refining facilities' },
-    plant: { label: 'Manufacturing', icon: '🏗️', description: 'Smelting and manufacturing plants' },
-    port: { label: 'Ports', icon: '⚓', description: 'Major shipping and distribution hubs' },
-    consumer: { label: 'Consumption', icon: '🏙️', description: 'Major consumption centers' },
-    hub: { label: 'Hubs', icon: '🌐', description: 'Trading and distribution hubs' },
-  };
+  const groupedResources = useMemo(() => {
+    if (activeCategory !== 'all') return null;
+    const groups: Partial<Record<ResourceCategory, Resource[]>> = {};
+    filteredResources.forEach((r) => {
+      if (!groups[r.category]) groups[r.category] = [];
+      groups[r.category]!.push(r);
+    });
+    return groups;
+  }, [filteredResources, activeCategory]);
 
-  const filteredCategories = useMemo(() => {
-    if (!searchQuery.trim()) return resourcesByCategory;
+  const globalStats = useMemo(() => {
+    const totalLocations = resourceList.reduce((sum, r) => sum + r.locations.length, 0);
+    const countries = new Set(resourceList.flatMap((r) => r.locations.map((l) => l.country)));
+    return { totalResources: resourceList.length, totalLocations, totalCountries: countries.size };
+  }, [resourceList]);
 
-    const query = searchQuery.toLowerCase();
-    const filtered: any = { energy: [], metal: [], mineral: [], element: [] };
-
-    Object.entries(resourcesByCategory).forEach(([category, items]) => {
-      filtered[category] = items.filter(resource =>
-        resource.name.toLowerCase().includes(query) ||
-        resource.description.toLowerCase().includes(query) ||
-        resource.uses.some(use => use.toLowerCase().includes(query))
-      );
+  const getTopCountries = (resource: Resource) => {
+    const countryStats = new Map<string, number>();
+    resource.locations.forEach((location) => {
+      const value = location.production || location.capacity || 0;
+      const current = countryStats.get(location.country) || 0;
+      countryStats.set(location.country, current + value);
     });
 
-    return filtered;
-  }, [resourcesByCategory, searchQuery]);
+    const sorted = Array.from(countryStats.entries())
+      .map(([country, production]) => ({
+        country,
+        production,
+        percentage: (production / resource.globalProduction) * 100,
+      }))
+      .sort((a, b) => b.production - a.production)
+      .slice(0, 10);
 
-  const totalResources = Object.values(resourcesByCategory).flat().length;
-  const totalLocations = Object.values(resources).reduce((sum, r) => sum + r.locations.length, 0);
-
-  const toggleLocationTypeFilter = (type: string) => {
-    setLocationTypeFilters(prev => ({
-      ...prev,
-      [type]: !prev[type]
-    }));
+    return sorted;
   };
 
-  const visibleLocationCount = selectedResource?.locations.filter(
-    loc => locationTypeFilters[loc.type]
-  ).length || 0;
+  const activeCount = selectedResource
+    ? selectedResource.locations.filter((l) => activeLocationTypes.has(l.type)).length
+    : 0;
+
+  const categories: (ResourceCategory | 'all')[] = ['all', 'metals', 'energy', 'minerals', 'critical'];
+
+  const renderResourceItem = (resource: Resource) => (
+    <div
+      key={resource.id}
+      className={`resource-item ${selectedResource?.id === resource.id ? 'active' : ''}`}
+      onClick={() => setSelectedResource(resource)}
+    >
+      <div className="resource-header">
+        <div className="resource-color" style={{ backgroundColor: resource.color }} />
+        <div className="resource-name">{resource.name}</div>
+        <div className="resource-badge">{resource.locations.length}</div>
+      </div>
+      <div className="resource-meta">
+        {formatNumber(resource.globalProduction)} {resource.unit}
+      </div>
+    </div>
+  );
 
   return (
     <div className="app">
       <div className="sidebar">
         <div className="sidebar-header">
-          <h1>Meridian</h1>
-          <p>Comprehensive visualization of global resource production, processing, and consumption patterns</p>
+          <div className="logo-row">
+            <h1>Meridian</h1>
+            <span className="version-badge">v1.0</span>
+          </div>
+          <p>Global Economy Visualizer</p>
         </div>
 
-        <div className="search-box">
+        <div className="sidebar-stats">
+          <div className="mini-stat">
+            <span className="mini-stat-value">{globalStats.totalResources}</span>
+            <span className="mini-stat-label">Resources</span>
+          </div>
+          <div className="mini-stat">
+            <span className="mini-stat-value">{globalStats.totalLocations}</span>
+            <span className="mini-stat-label">Locations</span>
+          </div>
+          <div className="mini-stat">
+            <span className="mini-stat-value">{globalStats.totalCountries}</span>
+            <span className="mini-stat-label">Countries</span>
+          </div>
+        </div>
+
+        <div className="search-container">
           <input
             type="text"
             className="search-input"
@@ -97,175 +128,171 @@ function App() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          {searchQuery && (
+            <button className="search-clear" onClick={() => setSearchQuery('')}>
+              &times;
+            </button>
+          )}
         </div>
 
-        <div className="stats-overview">
-          <div className="stats-grid-small">
-            <div className="stat-card-small">
-              <div className="stat-label-small">Resources</div>
-              <div className="stat-value-small">
-                {totalResources}
-                <span className="stat-unit-small">tracked</span>
-              </div>
-            </div>
-            <div className="stat-card-small">
-              <div className="stat-label-small">Locations</div>
-              <div className="stat-value-small">
-                {totalLocations}
-                <span className="stat-unit-small">sites</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Location Type Filters */}
-        <div className="filter-section">
-          <div className="filter-header">
-            <span className="filter-title">Supply Chain Levels</span>
-            <span className="filter-count">{visibleLocationCount} visible</span>
-          </div>
-          <div className="filter-toggles">
-            {Object.entries(locationTypeLabels).map(([type, info]) => {
-              const count = selectedResource?.locations.filter(loc => loc.type === type).length || 0;
-              if (count === 0) return null;
-
-              return (
-                <button
-                  key={type}
-                  className={`filter-toggle ${locationTypeFilters[type] ? 'active' : ''}`}
-                  onClick={() => toggleLocationTypeFilter(type)}
-                  title={info.description}
-                >
-                  <span className="toggle-icon">{info.icon}</span>
-                  <span className="toggle-label">{info.label}</span>
-                  <span className="toggle-count">{count}</span>
-                </button>
-              );
-            })}
-          </div>
+        <div className="category-tabs">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`category-tab ${activeCategory === cat ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat === 'all' ? 'All' : categoryLabels[cat]}
+            </button>
+          ))}
         </div>
 
         <div className="resource-list">
-          {Object.entries(filteredCategories).map(([category, items]) => (
-            items.length > 0 && (
-              <div key={category} className="resource-category">
-                <div className="category-title">
-                  <span>{categoryIcons[category]}</span>
-                  {categoryLabels[category]}
-                </div>
-                {items.map((resource) => (
-                  <div
-                    key={resource.id}
-                    className={`resource-item ${selectedResource?.id === resource.id ? 'active' : ''}`}
-                    onClick={() => setSelectedResource(resource)}
-                  >
-                    <div
-                      className="resource-color"
-                      style={{ backgroundColor: resource.color }}
-                    />
-                    <div className="resource-info">
-                      <div className="resource-name">{resource.name}</div>
-                      <div className="resource-stats">
-                        <span className="resource-stat-item">
-                          📍 {resource.locations.length} locations
-                        </span>
-                        <span className="resource-stat-item">
-                          📊 {resource.globalProduction} {resource.unit}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="resource-badge">
-                      {resource.category}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {searchQuery || activeCategory !== 'all' ? (
+            filteredResources.length > 0 ? (
+              filteredResources.map(renderResourceItem)
+            ) : (
+              <div className="no-results">No resources match your search</div>
             )
-          ))}
+          ) : (
+            groupedResources &&
+            (Object.entries(groupedResources) as [ResourceCategory, Resource[]][]).map(
+              ([category, items]) => (
+                <div key={category} className="resource-group">
+                  <div className="group-header">{categoryLabels[category]}</div>
+                  {items.map(renderResourceItem)}
+                </div>
+              )
+            )
+          )}
         </div>
       </div>
 
       <div className="map-container">
-        <Map resource={selectedResource} locationTypeFilters={locationTypeFilters} />
+        <div className="location-type-toggles">
+          {(Object.keys(locationTypeLabels) as LocationType[]).map((type) => (
+            <button
+              key={type}
+              className={`toggle-btn ${activeLocationTypes.has(type) ? 'active' : ''}`}
+              onClick={() => toggleLocationType(type)}
+            >
+              {locationTypeLabels[type].icon} {locationTypeLabels[type].label}
+            </button>
+          ))}
+          {selectedResource && (
+            <div className="active-count">
+              {activeCount} sites visible
+            </div>
+          )}
+        </div>
+
+        <WorldMap
+          resource={selectedResource}
+          activeLocationTypes={activeLocationTypes}
+        />
 
         {selectedResource && (
-          <div className="info-panel">
-            <h2>
-              <div
-                className="resource-color"
-                style={{ backgroundColor: selectedResource.color }}
-              />
-              {selectedResource.name}
-            </h2>
-            <p>{selectedResource.description}</p>
+          <>
+            {isInfoMinimized ? (
+              <div className="panel-tab info-tab" onClick={() => setIsInfoMinimized(false)}>
+                Resource Info
+              </div>
+            ) : (
+              <div className="info-panel">
+                <div className="panel-header">
+                  <h2>
+                    <div
+                      className="resource-color"
+                      style={{ backgroundColor: selectedResource.color }}
+                    />
+                    {selectedResource.name}
+                  </h2>
+                  <button className="minimize-btn" onClick={() => setIsInfoMinimized(true)}>
+                    <svg width="14" height="2" viewBox="0 0 14 2"><rect width="14" height="2" rx="1" fill="currentColor"/></svg>
+                  </button>
+                </div>
+                <p className="info-description">{selectedResource.description}</p>
 
-            <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-label">Global Production</div>
-                <div className="stat-value">
-                  {selectedResource.globalProduction.toLocaleString()}
-                  <span className="stat-unit">{selectedResource.unit}</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Global Consumption</div>
-                <div className="stat-value">
-                  {selectedResource.globalConsumption.toLocaleString()}
-                  <span className="stat-unit">{selectedResource.unit}</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Total Sites</div>
-                <div className="stat-value">
-                  {selectedResource.locations.length}
-                  <span className="stat-unit">locations</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Visible Sites</div>
-                <div className="stat-value">
-                  {visibleLocationCount}
-                  <span className="stat-unit">shown</span>
-                </div>
-              </div>
-            </div>
-
-            {selectedResource.marketSize && (
-              <div className="info-section">
-                <div className="info-section-title">Market Size</div>
-                <div style={{ fontSize: '18px', fontWeight: '700', color: '#fff' }}>
-                  {selectedResource.marketSize}
+                <div className="info-stats">
+                  <div className="stat-box">
+                    <div className="stat-label">Global Production</div>
+                    <div className="stat-value">
+                      {formatNumber(selectedResource.globalProduction)}
+                      <span className="stat-unit">{selectedResource.unit}</span>
+                    </div>
+                  </div>
+                  <div className="stat-box">
+                    <div className="stat-label">Tracked Sites</div>
+                    <div className="stat-value">
+                      {selectedResource.locations.length}
+                      <span className="stat-unit">locations</span>
+                    </div>
+                  </div>
+                  <div className="stat-box">
+                    <div className="stat-label">Visible</div>
+                    <div className="stat-value">
+                      {activeCount}
+                      <span className="stat-unit">on map</span>
+                    </div>
+                  </div>
+                  <div className="stat-box">
+                    <div className="stat-label">Countries</div>
+                    <div className="stat-value">
+                      {new Set(selectedResource.locations.map((l) => l.country)).size}
+                      <span className="stat-unit">nations</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
+          </>
+        )}
 
-            <div className="info-section">
-              <div className="info-section-title">Major Producers</div>
-              <div className="info-tags">
-                {selectedResource.majorProducers.map((producer, idx) => (
-                  <span key={idx} className="info-tag">🏭 {producer}</span>
-                ))}
+        {selectedResource && (
+          <>
+            {isCountryMinimized ? (
+              <div className="panel-tab country-tab" onClick={() => setIsCountryMinimized(false)}>
+                Top Countries
               </div>
-            </div>
+            ) : (
+              <div className="country-panel">
+                <div className="panel-header">
+                  <h2>Top Producing Countries</h2>
+                  <button className="minimize-btn" onClick={() => setIsCountryMinimized(true)}>
+                    <svg width="14" height="2" viewBox="0 0 14 2"><rect width="14" height="2" rx="1" fill="currentColor"/></svg>
+                  </button>
+                </div>
 
-            <div className="info-section">
-              <div className="info-section-title">Major Consumers</div>
-              <div className="info-tags">
-                {selectedResource.majorConsumers.map((consumer, idx) => (
-                  <span key={idx} className="info-tag">🏙️ {consumer}</span>
-                ))}
+                <div className="country-list">
+                  {getTopCountries(selectedResource).map((country, index) => (
+                    <div key={country.country} className="country-item">
+                      <div className="country-rank" style={{
+                        color: index < 3 ? selectedResource.color : undefined,
+                      }}>
+                        {index + 1}
+                      </div>
+                      <div className="country-info">
+                        <div className="country-name">{country.country}</div>
+                        <div className="country-production">
+                          {formatNumber(country.production)} {selectedResource.unit}
+                        </div>
+                      </div>
+                      <div className="country-pct">{country.percentage.toFixed(1)}%</div>
+                      <div className="country-bar">
+                        <div
+                          className="country-bar-fill"
+                          style={{
+                            width: `${Math.min(country.percentage, 100)}%`,
+                            backgroundColor: selectedResource.color,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-
-            <div className="info-section">
-              <div className="info-section-title">Primary Uses</div>
-              <div className="info-tags">
-                {selectedResource.uses.map((use, idx) => (
-                  <span key={idx} className="info-tag">{use}</span>
-                ))}
-              </div>
-            </div>
-          </div>
+            )}
+          </>
         )}
       </div>
     </div>
