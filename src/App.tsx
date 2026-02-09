@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
 import { Map } from './components/Map';
+import { Feed } from './components/Feed';
 import { resources } from './data/resources';
-import { Resource, LocationTypeFilter } from './types';
+import { Resource, LocationTypeFilter, AppView } from './types';
 import './App.css';
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
     resources.copper
   );
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeView, setActiveView] = useState<AppView>('map');
   const [locationTypeFilters, setLocationTypeFilters] = useState<LocationTypeFilter>({
     mine: true,
     field: true,
@@ -87,6 +89,21 @@ function App() {
         <div className="sidebar-header">
           <h1>Meridian</h1>
           <p>Comprehensive visualization of global resource production, processing, and consumption patterns</p>
+        </div>
+
+        <div className="view-switcher">
+          <button
+            className={`view-tab ${activeView === 'map' ? 'active' : ''}`}
+            onClick={() => setActiveView('map')}
+          >
+            Map View
+          </button>
+          <button
+            className={`view-tab ${activeView === 'feed' ? 'active' : ''}`}
+            onClick={() => setActiveView('feed')}
+          >
+            Community Feed
+          </button>
         </div>
 
         <div className="search-box">
@@ -185,89 +202,93 @@ function App() {
         </div>
       </div>
 
-      <div className="map-container">
-        <Map resource={selectedResource} locationTypeFilters={locationTypeFilters} />
+      {activeView === 'map' ? (
+        <div className="map-container">
+          <Map resource={selectedResource} locationTypeFilters={locationTypeFilters} />
 
-        {selectedResource && (
-          <div className="info-panel">
-            <h2>
-              <div
-                className="resource-color"
-                style={{ backgroundColor: selectedResource.color }}
-              />
-              {selectedResource.name}
-            </h2>
-            <p>{selectedResource.description}</p>
+          {selectedResource && (
+            <div className="info-panel">
+              <h2>
+                <div
+                  className="resource-color"
+                  style={{ backgroundColor: selectedResource.color }}
+                />
+                {selectedResource.name}
+              </h2>
+              <p>{selectedResource.description}</p>
 
-            <div className="stats-grid">
-              <div className="stat-item">
-                <div className="stat-label">Global Production</div>
-                <div className="stat-value">
-                  {selectedResource.globalProduction.toLocaleString()}
-                  <span className="stat-unit">{selectedResource.unit}</span>
+              <div className="stats-grid">
+                <div className="stat-item">
+                  <div className="stat-label">Global Production</div>
+                  <div className="stat-value">
+                    {selectedResource.globalProduction.toLocaleString()}
+                    <span className="stat-unit">{selectedResource.unit}</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Global Consumption</div>
+                  <div className="stat-value">
+                    {selectedResource.globalConsumption.toLocaleString()}
+                    <span className="stat-unit">{selectedResource.unit}</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Total Sites</div>
+                  <div className="stat-value">
+                    {selectedResource.locations.length}
+                    <span className="stat-unit">locations</span>
+                  </div>
+                </div>
+                <div className="stat-item">
+                  <div className="stat-label">Visible Sites</div>
+                  <div className="stat-value">
+                    {visibleLocationCount}
+                    <span className="stat-unit">shown</span>
+                  </div>
                 </div>
               </div>
-              <div className="stat-item">
-                <div className="stat-label">Global Consumption</div>
-                <div className="stat-value">
-                  {selectedResource.globalConsumption.toLocaleString()}
-                  <span className="stat-unit">{selectedResource.unit}</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Total Sites</div>
-                <div className="stat-value">
-                  {selectedResource.locations.length}
-                  <span className="stat-unit">locations</span>
-                </div>
-              </div>
-              <div className="stat-item">
-                <div className="stat-label">Visible Sites</div>
-                <div className="stat-value">
-                  {visibleLocationCount}
-                  <span className="stat-unit">shown</span>
-                </div>
-              </div>
-            </div>
 
-            {selectedResource.marketSize && (
+              {selectedResource.marketSize && (
+                <div className="info-section">
+                  <div className="info-section-title">Market Size</div>
+                  <div style={{ fontSize: '18px', fontWeight: '700', color: '#fff' }}>
+                    {selectedResource.marketSize}
+                  </div>
+                </div>
+              )}
+
               <div className="info-section">
-                <div className="info-section-title">Market Size</div>
-                <div style={{ fontSize: '18px', fontWeight: '700', color: '#fff' }}>
-                  {selectedResource.marketSize}
+                <div className="info-section-title">Major Producers</div>
+                <div className="info-tags">
+                  {selectedResource.majorProducers.map((producer, idx) => (
+                    <span key={idx} className="info-tag">🏭 {producer}</span>
+                  ))}
                 </div>
               </div>
-            )}
 
-            <div className="info-section">
-              <div className="info-section-title">Major Producers</div>
-              <div className="info-tags">
-                {selectedResource.majorProducers.map((producer, idx) => (
-                  <span key={idx} className="info-tag">🏭 {producer}</span>
-                ))}
+              <div className="info-section">
+                <div className="info-section-title">Major Consumers</div>
+                <div className="info-tags">
+                  {selectedResource.majorConsumers.map((consumer, idx) => (
+                    <span key={idx} className="info-tag">🏙️ {consumer}</span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="info-section">
+                <div className="info-section-title">Primary Uses</div>
+                <div className="info-tags">
+                  {selectedResource.uses.map((use, idx) => (
+                    <span key={idx} className="info-tag">{use}</span>
+                  ))}
+                </div>
               </div>
             </div>
-
-            <div className="info-section">
-              <div className="info-section-title">Major Consumers</div>
-              <div className="info-tags">
-                {selectedResource.majorConsumers.map((consumer, idx) => (
-                  <span key={idx} className="info-tag">🏙️ {consumer}</span>
-                ))}
-              </div>
-            </div>
-
-            <div className="info-section">
-              <div className="info-section-title">Primary Uses</div>
-              <div className="info-tags">
-                {selectedResource.uses.map((use, idx) => (
-                  <span key={idx} className="info-tag">{use}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <Feed selectedResource={selectedResource} />
+      )}
     </div>
   );
 }
