@@ -45,6 +45,7 @@ export function WorldMap({ resource, activeLocationTypes }: WorldMapProps) {
 
   return (
     <MapContainer
+      key={resource?.id || 'empty'}
       center={[20, 0]}
       zoom={2}
       minZoom={2}
