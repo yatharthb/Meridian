@@ -9,7 +9,7 @@ interface WorldMapProps {
   resources?: Resource[];
   activeLocationTypes: Set<LocationType>;
   countryFilter?: string | null;
-  countryTotals?: Map<string, number>;
+  allCountryTotals?: Map<string, Map<string, number>>;
   isAreaSelectMode?: boolean;
   selectedBounds?: L.LatLngBounds | null;
   onAreaSelected?: (bounds: L.LatLngBounds) => void;
@@ -218,7 +218,7 @@ interface UnifiedMarker {
   resourceId: string;
 }
 
-export function WorldMap({ resource, resources, activeLocationTypes, countryFilter, countryTotals, isAreaSelectMode, selectedBounds, onAreaSelected, onClearSelection }: WorldMapProps) {
+export function WorldMap({ resource, resources, activeLocationTypes, countryFilter, allCountryTotals, isAreaSelectMode, selectedBounds, onAreaSelected, onClearSelection }: WorldMapProps) {
   // Build unified marker list from either single resource or multiple resources
   const markers: UnifiedMarker[] = [];
 
@@ -289,13 +289,13 @@ export function WorldMap({ resource, resources, activeLocationTypes, countryFilt
         const radius = getMarkerRadius(m.location, m.globalProduction);
         const fillOpacity = getMarkerOpacity(m.location, m.globalProduction);
 
-        // Country percentage calculation
-        let countryPercentage: string | null = null;
-        if (countryFilter && countryTotals) {
-          const countryTotal = countryTotals.get(m.resourceId) || 0;
+        // National percentage calculation
+        let nationalPercentage: string | null = null;
+        if (allCountryTotals) {
+          const countryTotal = allCountryTotals.get(m.resourceId)?.get(m.location.country) || 0;
           const value = m.location.production || m.location.capacity || m.location.consumption || 0;
           if (countryTotal > 0 && value > 0) {
-            countryPercentage = ((value / countryTotal) * 100).toFixed(1);
+            nationalPercentage = ((value / countryTotal) * 100).toFixed(1);
           }
         }
 
@@ -358,11 +358,11 @@ export function WorldMap({ resource, resources, activeLocationTypes, countryFilt
                       </span>
                     </div>
                   )}
-                  {countryPercentage && (
+                  {nationalPercentage && (
                     <div className="detail-row">
-                      <span className="detail-label">% of {countryFilter}</span>
+                      <span className="detail-label">% of {m.location.country}</span>
                       <span className="detail-value">
-                        <span className="percentage country-pct-badge">{countryPercentage}%</span>
+                        <span className="percentage country-pct-badge">{nationalPercentage}%</span>
                       </span>
                     </div>
                   )}

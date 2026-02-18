@@ -103,15 +103,19 @@ function App() {
     }[];
   }, [selectedCountry, resourceList]);
 
-  // Country totals map for popup percentage calculations
-  const countryTotals = useMemo(() => {
-    if (!selectedCountry) return undefined;
-    const totals = new Map<string, number>();
-    countryData.forEach((d) => {
-      totals.set(d.resource.id, d.countryTotal);
-    });
+  // Per-resource per-country totals for popup percentage calculations
+  const allCountryTotals = useMemo(() => {
+    const totals = new Map<string, Map<string, number>>();
+    for (const r of resourceList) {
+      const countryMap = new Map<string, number>();
+      for (const loc of r.locations) {
+        const value = loc.production || loc.capacity || loc.consumption || 0;
+        countryMap.set(loc.country, (countryMap.get(loc.country) || 0) + value);
+      }
+      totals.set(r.id, countryMap);
+    }
     return totals;
-  }, [selectedCountry, countryData]);
+  }, [resourceList]);
 
   // Resources to pass to WorldMap in country view
   const countryResources = useMemo(() => {
@@ -465,7 +469,7 @@ function App() {
           resources={mapResources}
           activeLocationTypes={activeLocationTypes}
           countryFilter={selectedCountry}
-          countryTotals={countryTotals}
+          allCountryTotals={allCountryTotals}
           isAreaSelectMode={isAreaSelectMode}
           selectedBounds={selectedBounds}
           onAreaSelected={handleAreaSelected}
