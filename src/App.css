@@ -719,3 +719,452 @@
 .leaflet-control-attribution a {
   color: var(--text-muted) !important;
 }
+
+/* ---- Country Selector ---- */
+
+.country-selector {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1000;
+}
+
+.country-selector select {
+  padding: 7px 28px 7px 12px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%239ca3b4' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: all var(--transition);
+}
+
+.country-selector select:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+.country-selector select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+/* ---- Country View Header ---- */
+
+.country-view-header {
+  position: absolute;
+  top: 54px;
+  right: 14px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.back-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.country-view-name {
+  padding: 7px 14px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-primary);
+  border: 1px solid var(--accent);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+/* ---- Clickable Country Items ---- */
+
+.country-item.clickable {
+  cursor: pointer;
+}
+
+.country-item.clickable:hover {
+  background: rgba(108, 124, 255, 0.08);
+}
+
+/* ---- Electricity Breakdown Panel ---- */
+
+.electricity-panel {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 1000;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-primary);
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  animation: panelSlideUp 0.25s ease-out;
+  width: 360px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.electricity-panel h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.elec-total {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.elec-total-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.elec-total-unit {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.elec-stacked-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  gap: 1px;
+}
+
+.elec-stacked-segment {
+  height: 100%;
+  transition: width 0.4s ease-out;
+}
+
+.elec-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.elec-breakdown-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 2px 8px;
+  align-items: center;
+  padding: 6px 4px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.elec-breakdown-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.elec-breakdown-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  grid-row: 1 / 3;
+}
+
+.elec-breakdown-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.elec-breakdown-pct {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.elec-breakdown-bar {
+  grid-column: 2 / 4;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.elec-breakdown-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease-out;
+}
+
+/* ---- Country Detail Panel ---- */
+
+.country-detail-panel {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  z-index: 1000;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-primary);
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  animation: panelSlideUp 0.25s ease-out;
+  width: 340px;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.country-detail-panel h2 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.country-detail-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.country-detail-resources {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.country-detail-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.country-detail-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.country-detail-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.country-detail-sites {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.country-detail-global {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+/* ---- Popup Resource Name ---- */
+
+.location-resource-name {
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ---- Country Percentage Badge in Popup ---- */
+
+.country-pct-badge {
+  background: rgba(108, 124, 255, 0.15) !important;
+  color: #8b9cff !important;
+}
+
+/* ---- Area Select Button ---- */
+
+.area-select-btn {
+  border-left: 1px solid var(--border);
+  margin-left: 4px;
+  padding-left: 14px;
+}
+
+/* ---- Area Select Panel ---- */
+
+.area-select-panel {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 1000;
+  background: var(--panel-bg);
+  backdrop-filter: blur(var(--panel-blur));
+  color: var(--text-primary);
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  animation: panelSlideUp 0.25s ease-out;
+  width: 360px;
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.area-select-panel h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.area-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.area-resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.area-resource-section {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+
+.area-resource-header {
+  display: grid;
+  grid-template-columns: 10px 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.area-resource-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.area-resource-total {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.area-resource-pct {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-glow);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.area-country-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.area-country-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0 3px 18px;
+  font-size: 11px;
+}
+
+.area-country-row.single {
+  padding-left: 18px;
+}
+
+.area-country-name {
+  font-weight: 500;
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.area-country-amount {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.area-country-pct {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.area-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 20px 10px;
+  line-height: 1.5;
+}
+
+/* ---- Scrollbar for new panels ---- */
+
+.electricity-panel::-webkit-scrollbar,
+.country-detail-panel::-webkit-scrollbar,
+.area-select-panel::-webkit-scrollbar {
+  width: 4px;
+}
+
+.electricity-panel::-webkit-scrollbar-track,
+.country-detail-panel::-webkit-scrollbar-track,
+.area-select-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.electricity-panel::-webkit-scrollbar-thumb,
+.country-detail-panel::-webkit-scrollbar-thumb,
+.area-select-panel::-webkit-scrollbar-thumb {
+  background: var(--bg-hover);
+  border-radius: 4px;
+}

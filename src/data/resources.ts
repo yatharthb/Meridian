@@ -1,6 +1,8 @@
 import { ResourceMap } from '../types';
+import { electricityResources } from './electricity';
 
 export const resources: ResourceMap = {
+  ...electricityResources,
   copper: {
     id: 'copper',
     name: 'Copper',

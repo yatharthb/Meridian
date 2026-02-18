@@ -1,6 +1,6 @@
 export type LocationType = 'mine' | 'field' | 'refinery' | 'plant' | 'port' | 'consumer' | 'hub';
 
-export type ResourceCategory = 'metals' | 'energy' | 'minerals' | 'critical';
+export type ResourceCategory = 'metals' | 'energy' | 'minerals' | 'critical' | 'electricity';
 
 export interface Location {
   id: string;
@@ -30,6 +30,21 @@ export interface Resource {
 
 export type ResourceMap = Record<string, Resource>;
 
+export interface AreaCountryStats {
+  country: string;
+  totalInArea: number;
+  countryTotalGlobal: number;
+  pctOfCountry: number;
+}
+
+export interface AreaResourceStats {
+  resource: Resource;
+  locationsInArea: number;
+  totalInArea: number;
+  pctOfGlobal: number;
+  countryBreakdown: AreaCountryStats[];
+}
+
 export const locationTypeLabels: Record<LocationType, { label: string; icon: string }> = {
   mine: { label: 'Mining', icon: '\u26CF\uFE0F' },
   field: { label: 'Fields', icon: '\uD83D\uDEE2\uFE0F' },
@@ -45,6 +60,7 @@ export const categoryLabels: Record<ResourceCategory, string> = {
   energy: 'Energy',
   minerals: 'Industrial Minerals',
   critical: 'Critical Elements',
+  electricity: 'Electricity Generation',
 };
 
 export function formatNumber(value: number, decimals = 1): string {
